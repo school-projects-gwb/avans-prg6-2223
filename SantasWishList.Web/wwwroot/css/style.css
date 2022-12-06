@@ -1,0 +1,27 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-primary {
+    @apply bg-black text-white rounded-lg font-bold px-4 py-2 border border-black;
+}
+
+.btn-primary:disabled {
+    @apply bg-gray-300 text-gray-400 border-gray-300;
+}
+
+.btn-primary:hover:enabled {
+    @apply bg-white text-black;
+}
+
+.btn-secondary {
+    @apply bg-white text-black rounded-lg font-bold px-4 py-2 border border-black;
+}
+
+.btn-secondary:hover {
+    @apply bg-black text-white;
+}
+
+.input-text {
+    @apply border border-gray-300 rounded-lg rounded-t-none px-4 py-2;
+}
