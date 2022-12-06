@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,41 @@ namespace SantasWishList.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-		}
+
+            int uid = 1;
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = uid,
+                    UserName = "santa",
+                    NormalizedUserName = "SANTACLAUSE",
+                    PasswordHash = new PasswordHasher<User>().HashPassword(null, "wachtwoord")
+                }
+            );
+
+            modelBuilder.Entity<Role>().HasData(
+                new
+                {
+                    Id = 1,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new
+                {
+                    Id = 2,
+                    Name = "Temp",
+                    NormalizedName = "TEMP"
+                }
+            );
+
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+                new IdentityUserRole<int>
+                {
+                    UserId = uid,
+                    RoleId = 1
+                });
+        }
 	}
 }
 
