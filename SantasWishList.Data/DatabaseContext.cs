@@ -22,41 +22,13 @@ namespace SantasWishList.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-
-            int uid = 1;
-
-            modelBuilder.Entity<User>().HasData(
-                new User
-                {
-                    Id = uid,
-                    UserName = "santa",
-                    NormalizedUserName = "SANTACLAUSE",
-                    PasswordHash = new PasswordHasher<User>().HashPassword(null, "wachtwoord")
-                }
-            );
-
-            modelBuilder.Entity<Role>().HasData(
-                new
-                {
-                    Id = 1,
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new
-                {
-                    Id = 2,
-                    Name = "Temp",
-                    NormalizedName = "TEMP"
-                }
-            );
-
-            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
-                new IdentityUserRole<int>
-                {
-                    UserId = uid,
-                    RoleId = 1
-                });
-        }
+			modelBuilder.Entity<User>(user => user.ToTable("User"));
+			// Seed data
+			Seeder seeder = new Seeder();
+			modelBuilder.Entity<User>().HasData(seeder.UserSeeder());
+			modelBuilder.Entity<Role>().HasData(seeder.RoleSeeder());
+			modelBuilder.Entity<IdentityUserRole<int>>().HasData(seeder.IdentityUserRoleSeeder());
+		}
 	}
 }
 

@@ -25,3 +25,11 @@
 .input-text {
     @apply border border-gray-300 rounded-lg rounded-t-none px-4 py-2;
 }
+
+.nav-link {
+    @apply mx-4 text-black text-xl;
+}
+
+.nav-link:hover {
+    @apply underline;
+}

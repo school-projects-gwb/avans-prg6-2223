@@ -165,12 +165,14 @@ namespace SantasWishList.Data.Migrations
                         new
                         {
                             Id = 1,
+                            ConcurrencyStamp = "e4e1ceae-aa50-45aa-9ac1-a5cf6c41406c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
+                            ConcurrencyStamp = "0ff2985b-56ca-477a-8a1e-a2fbcbcec4af",
                             Name = "Temp",
                             NormalizedName = "TEMP"
                         });
@@ -196,6 +198,9 @@ namespace SantasWishList.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGood")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsLocked")
@@ -244,20 +249,22 @@ namespace SantasWishList.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("User", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "974669b7-8caa-4b7b-8b05-784cd8cd4758",
+                            ConcurrencyStamp = "36bccef2-ffbf-46ad-8085-12a4907b9a4a",
                             EmailConfirmed = false,
+                            IsGood = false,
                             IsLocked = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "SANTACLAUSE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDn+f8CUmOtHqVsy/+8J0FJMNC5BlUWhA9PNmyFgPJ03/H1lU8x0ozZnydZoNeW7wQ==",
+                            NormalizedUserName = "SANTA",
+                            PasswordHash = "AQAAAAEAACcQAAAAELemv2SVB8XIypUC3YfgAo39C2VDxAVIM8Ag79VWi8hVK4GkQsAfo+/jnXsCCqBEQg==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "3549c600-493d-4c9f-84a7-933996f34f22",
                             TwoFactorEnabled = false,
                             UserName = "santa"
                         });

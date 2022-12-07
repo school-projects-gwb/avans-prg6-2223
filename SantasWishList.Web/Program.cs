@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SantasWishList.Data;
 using SantasWishList.Data.Models;
+using SantasWishList.Web.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Context and Identity
 builder.Services.AddDbContext<DatabaseContext>()
-    .AddDefaultIdentity<User>()
-    .AddRoles<Role>()
-    .AddEntityFrameworkStores<DatabaseContext>();
+    .AddIdentity<User, Role>()
+    // .AddRoles<Role>()
+    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>()
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddMvc();

@@ -7,6 +7,8 @@ namespace SantasWishList.Data.Models
 	public class User : IdentityUser<int>
     {
 		public bool IsLocked { get; set; }
+		
+		public bool IsGood { get; set; }
 	}
 }
 
