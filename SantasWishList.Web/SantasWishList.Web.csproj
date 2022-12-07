@@ -24,6 +24,7 @@
     <Content Remove="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Wishlist\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,37 @@ namespace SantasWishList.Logic
 {
     public class WishListValidation
     {
-        //Which ones do we need?
+        public ValidationResult ValidateWishList()
+        {
+            ValidationResult result;
+            result = ValidateAmountOfGifts();
+            if (CheckError(result)) { return result; }
+
+            result = ValidateAge();
+            if (CheckError(result)) { return result; }
+
+            result = ValidateLegoOrKnex();
+            if (CheckError(result)) { return result; }
+
+            result = ValidateNightLamp();
+            if (CheckError(result)) { return result; }
+
+            result = ValidateMusic();
+            if (CheckError(result)) { return result; }
+
+            result = ValidateUniqueGift();
+            if (CheckError(result)) { return result; }
+
+            result = ValidateCostumRule();
+            return result;
+        }
+
+        private bool CheckError(ValidationResult check)
+        {
+            if(check == ValidationResult.Success) { return false; }
+            return true;
+        }
+
         public ValidationResult ValidateAmountOfGifts()
         {
             /*
@@ -35,7 +65,9 @@ namespace SantasWishList.Logic
              * if so return treu, if not return false
              * has to be a nice kid but that will be checked in the validator.
              */
-            if (description.Contains("vrijwilligerswerk")) { return true; }
+
+            //put it all to lower case just to make sure that case sensitivity doesn't mess with this one.
+            if (description.ToLower().Contains("vrijwilligerswerk")) { return true; }
             return false;
         }
 
