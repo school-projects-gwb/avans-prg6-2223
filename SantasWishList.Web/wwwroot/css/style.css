@@ -39,7 +39,7 @@
     width: 50px;
     height: 25px;
     border-radius: .75rem;
-    @apply top-8 left-8;
+    margin-top: 2rem;
 }
 
 .toggler:hover {
@@ -64,4 +64,8 @@
 
 .toggler .togglerInput:checked ~ .ball {
     transform: translateX(25px);
+}
+
+.ball {
+    background: #f0ebf4;
 }

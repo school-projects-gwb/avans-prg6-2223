@@ -29,7 +29,7 @@ public class AccountController : Controller
 
         if (ModelState.IsValid)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password.ToLower(), true, false);
 
             if (result.Succeeded) return LocalRedirect(model.ReturnUrl);
 

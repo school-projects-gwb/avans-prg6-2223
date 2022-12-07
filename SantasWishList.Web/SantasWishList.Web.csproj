@@ -28,9 +28,6 @@
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="SantasWishlist.Domain" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
@@ -43,11 +40,6 @@
     <ProjectReference Include="..\SantasWishList.Data\SantasWishList.Data.csproj" />
     <ProjectReference Include="..\SantasWishList.Logic\SantasWishList.Logic.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="SantasWishlist.Domain">
-      <HintPath>..\..\..\Downloads\SantasWishlist.Domain.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <PropertyGroup>
     <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
   </PropertyGroup>
@@ -58,5 +50,10 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ValidationScriptsPartial.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewImports.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SantasWishlist.Domain">
+      <HintPath>..\SantasWishlist.Domain.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
