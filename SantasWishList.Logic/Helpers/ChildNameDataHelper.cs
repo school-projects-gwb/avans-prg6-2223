@@ -13,4 +13,7 @@ public static class ChildNameDataHelper
         var check = GetNamesFromData(nameData);
         return check.Count() != check.Distinct().Count();
     }
+
+    public static string GetPrettyNameDataString(string nameData) => 
+        string.Join(", ", GetNamesFromData(nameData).ToArray());
 }
