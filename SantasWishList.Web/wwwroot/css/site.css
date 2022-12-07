@@ -513,6 +513,10 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.static {
+  position: static;
+}
+
 .z-40 {
   z-index: 40;
 }
@@ -552,6 +556,10 @@ video {
 
 .mt-0 {
   margin-top: 0px;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -768,6 +776,11 @@ video {
 }
 
 .nav-link:hover {
+  text-decoration-line: underline;
+}
+
+.nav-link-active {
+  font-weight: 700;
   text-decoration-line: underline;
 }
 

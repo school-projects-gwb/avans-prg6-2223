@@ -42,10 +42,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Logout(string returnUrl = null)
     {
-        returnUrl ??= Url.Content("~/");
-        
         await _signInManager.SignOutAsync();
-        
-        return LocalRedirect(returnUrl);
+        return LocalRedirect("/");
     }
 }

@@ -34,6 +34,10 @@
     @apply underline;
 }
 
+.nav-link-active {
+    @apply font-bold underline;
+}
+
 .toggler {
     position: absolute;
     width: 50px;
