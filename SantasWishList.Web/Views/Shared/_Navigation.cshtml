@@ -10,21 +10,23 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <header>
-        <nav class="w-full sm:flex justify-center sm:justify-between p-4">
-            <div class="flex justify-between w-full md:w-auto md:inline-block">
-                @*<a class="z-40" asp-controller="Home" asp-action="Index"><img src="/images/logo.png" class="w-24" /></a>*@
-                <i class="md:hidden z-40 fa-solid fa-bars text-4xl cursor-pointer" onclick="toggleNav(event)"></i>
-            </div>
-            <div id="navigationMenu" class="nav-mobile hidden md:inline-block">
-                @if (User.IsInRole("Admin"))
-                {
-                    <a class="nav-link @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="WishList" asp-action="CreateChildren">
-                        Kinderen uitnodigen
-                    </a>
-                }
-                <form class="inline-block" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                    <input type="submit" class="nav-link cursor-pointer" value="Uitloggen">
-                </form>
+        <nav class="w-full sm:flex justify-center p-4">
+            <div class="flex justify-between w-full md:w-1/2 xl:w-5/12 max-w-screen-xl">
+                <div class="flex justify-between w-full md:w-auto md:inline-block items-center">
+                    <p class="font-bold tracking-tight text-lg text-message-error">SantasWishList</p>
+                    <i class="md:hidden z-40 fa-solid fa-bars text-4xl cursor-pointer" onclick="toggleNav(event)"></i>
+                </div>
+                <div id="navigationMenu" class="nav-mobile hidden md:inline-block">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="nav-link mr-4 @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="WishList" asp-action="CreateChildren">
+                            Kinderen uitnodigen
+                        </a>
+                    }
+                    <form class="inline-block" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <input type="submit" class="nav-link cursor-pointer" value="Uitloggen">
+                    </form>
+                </div>
             </div>
         </nav>
     </header>
