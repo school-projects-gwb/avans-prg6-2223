@@ -5,10 +5,17 @@ using SantasWishList.Web.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Context and Identity
-builder.Services.AddDbContext<DatabaseContext>()
-    .AddIdentity<User, Role>()
-    // .AddRoles<Role>()
+//Context and Identity, remove password complexity requirements
+builder.Services
+    .AddDbContext<DatabaseContext>()
+    .AddIdentity<User, Role>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+    })
     .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();

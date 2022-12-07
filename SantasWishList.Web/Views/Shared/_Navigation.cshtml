@@ -18,7 +18,7 @@
             <div id="navigationMenu" class="nav-mobile hidden md:inline-block">
                 @if (User.IsInRole("Admin"))
                 {
-                    <a class="nav-link @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="WishList" asp-action="Index">
+                    <a class="nav-link @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="WishList" asp-action="CreateChildren">
                         Kinderen uitnodigen
                     </a>
                 }

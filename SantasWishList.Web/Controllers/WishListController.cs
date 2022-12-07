@@ -15,13 +15,25 @@ public class WishListController : Controller
         _userManager = userManager;
     }
     
-    public IActionResult Index() => View();
+    public IActionResult CreateChildren() => View();
 
-    public IActionResult CreateChildren(CreateChildrenViewModel model)
+    [HttpPost]
+    public async Task<IActionResult> CreateChildren(CreateChildrenViewModel model)
     {
-        if (!ModelState.IsValid) return RedirectToAction("Index");
+        if (!ModelState.IsValid) return View();
         var names = ChildNameDataHelper.GetNamesFromData(model.NameData);
-     
+        
+        foreach (string name in names)
+        {
+            User user = new User();
+            user.UserName = name.ToLower();
+            user.IsGood = model.IsGood;
+            user.NormalizedUserName = name.ToUpper();
+            user.SecurityStamp = Guid.NewGuid().ToString();
+            
+            // await _userManager.CreateAsync(user, model.Password);
+        }
+
         //todo Create accounts
         
         throw new NotImplementedException();
