@@ -12,7 +12,7 @@ using SantasWishList.Data;
 namespace SantasWishList.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221206191007_first")]
+    [Migration("20221207071622_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -201,6 +201,9 @@ namespace SantasWishList.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -251,11 +254,12 @@ namespace SantasWishList.Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "83a05bed-67a6-4d80-865f-420676a28da2",
+                            ConcurrencyStamp = "974669b7-8caa-4b7b-8b05-784cd8cd4758",
                             EmailConfirmed = false,
+                            IsLocked = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "SANTACLAUSE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJJCxspVDs6erNoQINSOyhTn+26h/6CiiG9Z466VAzokCcwjwOO8m6d2InclQ6IOQQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDn+f8CUmOtHqVsy/+8J0FJMNC5BlUWhA9PNmyFgPJ03/H1lU8x0ozZnydZoNeW7wQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "santa"

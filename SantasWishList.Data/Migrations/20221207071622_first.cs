@@ -34,6 +34,7 @@ namespace SantasWishList.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -171,8 +172,8 @@ namespace SantasWishList.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "83a05bed-67a6-4d80-865f-420676a28da2", null, false, false, null, null, "SANTACLAUSE", "AQAAAAEAACcQAAAAEJJCxspVDs6erNoQINSOyhTn+26h/6CiiG9Z466VAzokCcwjwOO8m6d2InclQ6IOQQ==", null, false, null, false, "santa" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsLocked", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, "974669b7-8caa-4b7b-8b05-784cd8cd4758", null, false, false, false, null, null, "SANTACLAUSE", "AQAAAAEAACcQAAAAEDn+f8CUmOtHqVsy/+8J0FJMNC5BlUWhA9PNmyFgPJ03/H1lU8x0ozZnydZoNeW7wQ==", null, false, null, false, "santa" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
