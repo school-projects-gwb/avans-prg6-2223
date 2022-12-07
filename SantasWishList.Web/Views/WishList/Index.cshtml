@@ -1,0 +1,39 @@
+@model CreateChildrenViewModel
+
+@{
+    ViewData["Title"] = "Nodig kinderen uit";
+}
+
+<div class="w-full flex justify-center mt-16">
+    <form id="account" method="post" class="w-full md:w-1/2 lg:w-1/4 mx-8">
+        <h1 class="text-5xl font-semibold tracking-tight">Hoi Kerstman!</h1>
+        <h3 class="text-2xl leading-10 mt-2">Nodig nieuwe kinderen uit om hun verlanglijstje in te vullen door voor hen accounts aan te maken.</h3>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mt-4 flex flex-col mt-8">
+            <label asp-for="NameData" class="form-label">Namen kinderen*</label>
+            <textarea asp-for="NameData" class="input-text w-full" aria-required="true"></textarea>
+            <span asp-validation-for="NameData" class="text-danger"></span>
+            <span class="text-gray-600 text-sm ml-0.5 mt-0.5">* Maak onderscheid tussen de namen d.m.v. comma's.<br/> Voorbeeld: <span class="p-0.5 rounded-md italic bg-gray-300">Piet, Henk, Klaas</span></span>
+        </div>
+        
+        <div class="mt-4 flex flex-col mt-4">
+            <label asp-for="IsGood" class="form-label">Zijn de kindjes lief geweest?</label>
+            <label class="toggler">
+                <input class="togglerInput" asp-for="IsGood" aria-required="true" />
+            <span class="ball"></span>
+            </label>
+        </div>
+        
+        <div class="mt-4 flex flex-col mt-4">
+            <label asp-for="Password" class="form-label">Wachtwoord*</label>
+            <input asp-for="Password" class="input-text w-full" autocomplete="current-password" aria-required="true"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <span class="text-gray-600 text-sm ml-0.5 mt-0.5">* Kies een wachtwoord dat eenvoudig te onthouden en in te typen is.</span>
+        </div>
+
+        <button id="login-submit" type="submit" class="btn-primary w-full mt-8">Creeër accounts</button>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
