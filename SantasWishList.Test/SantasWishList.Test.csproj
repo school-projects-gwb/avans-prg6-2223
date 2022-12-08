@@ -25,4 +25,10 @@
     <ProjectReference Include="..\SantasWishList.Web\SantasWishList.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SantasWishlist.Domain">
+      <HintPath>..\SantasWishlist.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

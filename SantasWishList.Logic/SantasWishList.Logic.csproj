@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SantasWishList.Data\SantasWishList.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="SantasWishlist.Domain">
       <HintPath>..\SantasWishlist.Domain.dll</HintPath>
     </Reference>

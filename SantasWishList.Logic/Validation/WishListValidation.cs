@@ -37,7 +37,7 @@ namespace SantasWishList.Logic.Validation
             return results;
         }
 
-        public ValidationResult ValidateAmountOfGifts(Child child)
+        private ValidationResult ValidateAmountOfGifts(Child child)
         {
             /*
              * instructions:
@@ -138,7 +138,7 @@ namespace SantasWishList.Logic.Validation
             return false;
         }
 
-        public ValidationResult ValidateLegoOrKnex(WishList wishlist)
+        private ValidationResult ValidateLegoOrKnex(WishList wishlist)
         {
             /*
              * instructions:
@@ -156,7 +156,7 @@ namespace SantasWishList.Logic.Validation
             return ValidationResult.Success;
         }
 
-        public ValidationResult ValidateAge(Child child)
+        private ValidationResult ValidateAge(Child child)
         {
             /*
              * instructions:
@@ -173,7 +173,7 @@ namespace SantasWishList.Logic.Validation
             return ValidationResult.Success;
         }
 
-        public ValidationResult ValidateNightLamp(WishList wishlist)
+        private ValidationResult ValidateNightLamp(WishList wishlist)
         {
             /*
              * instructions:
@@ -184,7 +184,7 @@ namespace SantasWishList.Logic.Validation
             return ValidationResult.Success;
         }
 
-        public ValidationResult ValidateMusic(WishList wishlist)
+        private ValidationResult ValidateMusic(WishList wishlist)
         {
             /*
              * instructions:
@@ -210,7 +210,7 @@ namespace SantasWishList.Logic.Validation
             return false;
         }
 
-        public ValidationResult ValidateUniqueGift(WishList wishlist)
+        private ValidationResult ValidateUniqueGift(WishList wishlist)
         {
             /*
              * instructions:
@@ -234,7 +234,7 @@ namespace SantasWishList.Logic.Validation
             return ValidationResult.Success;
         }
 
-        public ValidationResult ValidateCostumRule(WishList wishlist)
+        private ValidationResult ValidateCostumRule(WishList wishlist)
         {
             /*
              * instructions:
