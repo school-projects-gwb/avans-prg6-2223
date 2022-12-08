@@ -28,4 +28,9 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SantasWishlist.Domain">
+      <HintPath>..\SantasWishlist.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
