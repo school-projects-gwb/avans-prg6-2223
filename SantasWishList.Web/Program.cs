@@ -24,9 +24,7 @@ builder.Services
 // Add services to the container.
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<SantasWishlist.Domain.GiftRepository>();
-builder.Services.AddScoped<SantasWishlist.Domain.Gift>();
-builder.Services.AddScoped<SantasWishlist.Domain.WishList>();
+builder.Services.AddSingleton<IGiftRepository, GiftRepository>();
 
 var app = builder.Build();
 
