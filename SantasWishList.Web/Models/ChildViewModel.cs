@@ -1,4 +1,5 @@
 ﻿using Microsoft.Build.Framework;
+using SantasWishlist.Domain;
 using System.Text.Json.Nodes;
 
 namespace SantasWishList.Web.Models
@@ -6,18 +7,21 @@ namespace SantasWishList.Web.Models
     public class ChildViewModel
     {
         [Required]
-        public int age { get; set; }
+        public int Age { get; set; }
         [Required]
-        public behaviour behaviour { get; set; }
+        public Behaviour Behaviour { get; set; }
         [Required]
-        public string reasoning { get; set; }
-
+        public bool HasBeenNice { get; set; }
+        [Required]
+        public string Reasoning { get; set; }
+        [Required]
+        public Dictionary<GiftCategory, Gift> Wishlist { get; set; }
     }
     
-    public enum behaviour
+    public enum Behaviour
     {
-        Braaf,
-        Beetje,
-        Stout
+        BRAAF,
+        BEETJE,
+        STOUT
     }
 }

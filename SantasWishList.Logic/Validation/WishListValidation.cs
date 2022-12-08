@@ -1,14 +1,20 @@
-﻿using System;
+﻿using SantasWishlist.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SantasWishList.Logic
+namespace SantasWishList.Logic.Validation
 {
     public class WishListValidation
     {
+        public WishListValidation(IGiftRepository repo)
+        {
+
+        }
+
         public ValidationResult ValidateWishList()
         {
             ValidationResult result;
@@ -36,7 +42,7 @@ namespace SantasWishList.Logic
 
         private bool CheckError(ValidationResult check)
         {
-            if(check == ValidationResult.Success) { return false; }
+            if (check == ValidationResult.Success) { return false; }
             return true;
         }
 

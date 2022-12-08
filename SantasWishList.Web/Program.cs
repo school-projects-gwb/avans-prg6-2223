@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using SantasWishList.Data;
 using SantasWishList.Data.Models;
 using SantasWishList.Web.Authorization;
+using SantasWishlist.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services
 // Add services to the container.
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<SantasWishlist.Domain.GiftRepository>();
+builder.Services.AddScoped<SantasWishlist.Domain.Gift>();
+builder.Services.AddScoped<SantasWishlist.Domain.WishList>();
 
 var app = builder.Build();
 
