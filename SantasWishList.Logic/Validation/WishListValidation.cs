@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SantasWishlist.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,37 +8,21 @@ using System.Threading.Tasks;
 
 namespace SantasWishList.Logic.Validation
 {
-    public class WishListValidation
-    {
-        public ValidationResult ValidateWishList()
+    public class WishListValidation {
+        public List<ValidationResult> ValidateWishList()
         {
-            ValidationResult result;
-            result = ValidateAmountOfGifts();
-            if (CheckError(result)) { return result; }
+            
+            List<ValidationResult> results = new List<ValidationResult>();
 
-            result = ValidateAge();
-            if (CheckError(result)) { return result; }
+            results.Add(ValidateAmountOfGifts());
+            results.Add(ValidateAge());
+            results.Add(ValidateLegoOrKnex());
+            results.Add(ValidateNightLamp());
+            results.Add(ValidateMusic());
+            results.Add(ValidateUniqueGift());
+            results.Add(ValidateCostumRule());
 
-            result = ValidateLegoOrKnex();
-            if (CheckError(result)) { return result; }
-
-            result = ValidateNightLamp();
-            if (CheckError(result)) { return result; }
-
-            result = ValidateMusic();
-            if (CheckError(result)) { return result; }
-
-            result = ValidateUniqueGift();
-            if (CheckError(result)) { return result; }
-
-            result = ValidateCostumRule();
-            return result;
-        }
-
-        private bool CheckError(ValidationResult check)
-        {
-            if (check == ValidationResult.Success) { return false; }
-            return true;
+            return results;
         }
 
         public ValidationResult ValidateAmountOfGifts()
