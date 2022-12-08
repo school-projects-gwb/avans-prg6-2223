@@ -13,8 +13,7 @@ namespace SantasWishList.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -25,13 +24,10 @@ namespace SantasWishList.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
-                    IsGood = table.Column<bool>(type: "bit", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -49,7 +45,7 @@ namespace SantasWishList.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +54,7 @@ namespace SantasWishList.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -79,7 +75,7 @@ namespace SantasWishList.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -87,9 +83,9 @@ namespace SantasWishList.Data.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_User_UserId",
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -101,15 +97,15 @@ namespace SantasWishList.Data.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_User_UserId",
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -118,8 +114,8 @@ namespace SantasWishList.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,9 +127,9 @@ namespace SantasWishList.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_User_UserId",
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -142,7 +138,7 @@ namespace SantasWishList.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -151,9 +147,9 @@ namespace SantasWishList.Data.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_User_UserId",
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -161,22 +157,22 @@ namespace SantasWishList.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "79cbb912-64ba-4eb0-b229-aac3e4935e8d", "Santa", "SANTA" });
+                values: new object[] { "1", "ae6a7477-ce96-4084-ab77-09776ebf13fd", "Santa", "SANTA" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "0ed20a6c-2b3d-486f-8e3c-f7e2f8670df3", "Child", "CHILD" });
+                values: new object[] { "2", "53677a14-d213-416d-b694-1893baa1ef03", "Child", "CHILD" });
 
             migrationBuilder.InsertData(
-                table: "User",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsGood", "IsLocked", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "051f911b-bc65-4ca2-81b1-2cb718242fff", null, false, false, false, false, null, null, "SANTA", "AQAAAAEAACcQAAAAEAEekKM4Twg/RS1MdFkHLvee3mn7Bk2oeVaI6FGmRwcLDOCXxXrSAm+SRWXytPejhg==", null, false, "8e927218-63f0-4994-ab34-454772f6be4e", false, "santa" });
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "1", 0, "dcba882a-7da1-42a8-b706-dfbdc77e2794", null, false, false, null, null, "SANTA", "AQAAAAEAACcQAAAAELwiyYqIppzPCrk0IqirBak+SUgD/9n2Xdk0hRcO7RcrIh7LJBWhnWroIuMttkC5Jw==", null, false, "63e8623c-9abd-4230-9c20-7eb751c011e6", false, "santa" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { 1, 1 });
+                values: new object[] { "1", "1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -207,12 +203,12 @@ namespace SantasWishList.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "User",
+                table: "AspNetUsers",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "User",
+                table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
@@ -239,7 +235,7 @@ namespace SantasWishList.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "AspNetUsers");
         }
     }
 }

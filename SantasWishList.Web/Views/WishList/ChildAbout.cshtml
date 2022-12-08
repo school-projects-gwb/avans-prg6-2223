@@ -1,5 +1,42 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using static SantasWishList.Web.Extensions.BehaviourExtension;
+@using SantasWishList.Data.Models
 @model SantasWishList.Data.Models.Child
 
 @{
-    ViewData["Title"] = "Nodig kinderen uit";
+    ViewData["Title"] = "Verlanglijstje invullen";
 }
+
+<div class="w-full flex justify-center mt-16">
+    <form method="post" asp-action="ChildAbout" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
+        <h1 class="text-5xl font-semibold tracking-tight">Hoi @(ViewBag.Name)!</h1>
+        <h3 class="text-2xl leading-10 mt-2">De <span class="text-message-success">Kerstman</span> heeft je gevraagd om je verlanglijstje in te vullen, maar ik wil eerst wat meer van je weten!</h3>
+        
+        <div class="mt-4 flex flex-col mt-8">
+            <label asp-for="Age" class="mb-1">Hoe oud ben je?</label>
+            <input asp-for="Age" class="input-text w-full" aria-required="true"/>
+            <span asp-validation-for="Age" class="text-message-error"></span>
+        </div>
+        
+        <div class="mt-4 flex flex-col mt-8">
+            <label asp-for="Age" class="mb-1">Ben je braaf geweest?</label>
+            @foreach (Behaviour behaviour in Enum.GetValues(typeof(Behaviour)))
+            {
+                <label>
+                    <input type="radio" asp-for="Behaviour" value="@behaviour"/> @behaviour.ToBehaviourText()
+                </label>
+            }
+            <span asp-validation-for="Behaviour" class="text-message-error"></span>
+        </div>
+        
+        <div class="mt-4 flex flex-col mt-8">
+            <label asp-for="Reasoning" class="mb-1">Wat voor brave dingen heb je allemaal gedaan?</label>
+            <input asp-for="Reasoning" class="input-text w-full" aria-required="true"/>
+            <span asp-validation-for="Reasoning" class="text-message-error"></span>
+        </div>
+        
+        <div class="w-full border-t-2 border-black mt-16">
+            <input type="submit" class="btn-primary w-full md:w-3/4 lg:w-1/2 mt-8" value="Cadeautjes uitkiezen!">
+        </div>
+    </form>
+</div>

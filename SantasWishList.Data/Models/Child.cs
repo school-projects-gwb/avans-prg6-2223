@@ -1,10 +1,12 @@
-﻿using SantasWishlist.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using SantasWishlist.Domain;
 
 namespace SantasWishList.Data.Models
 {
     public class Child
     {
-        public User User { get; set; }
+        public string Name { get; set; }
+        public bool IsNaughty { get; set; }
         public int Age { get; set; }
         public Behaviour Behaviour { get; set; }
         public string? Reasoning { get; set; }
@@ -13,8 +15,11 @@ namespace SantasWishList.Data.Models
     
     public enum Behaviour
     {
+        [Display(Name = "Heel erg braaf!")]
         BRAAF,
+        [Display(Name = "Een beetje braaf.")]
         BEETJE,
+        [Display(Name = "Héél erg stout.")]
         STOUT
     }
 }

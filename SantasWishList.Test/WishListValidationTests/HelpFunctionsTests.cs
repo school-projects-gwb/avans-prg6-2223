@@ -15,9 +15,7 @@ namespace SantasWishList.Test.WishListValidationTests
         public static Child makeChild(string name, string description, int age, bool santaJudgement, Behaviour behaviour)
         {
             Child child = new Child();
-            child.User = new User();
-            child.User.IsGood = santaJudgement;
-            child.User.UserName = name;
+            child.IsNaughty = santaJudgement;
             child.Wishlist = new WishList();
             child.Wishlist.Wanted = new List<Gift>();
             child.Age = age;

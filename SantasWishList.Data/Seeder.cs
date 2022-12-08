@@ -5,42 +5,42 @@ namespace SantasWishList.Data;
 
 public class Seeder
 {
-	private readonly int userId = 1;
+	private readonly string userId = "1";
 
-	public IEnumerable<User> UserSeeder() => new List<User>()
+	public IEnumerable<IdentityUser> UserSeeder() => new List<IdentityUser>()
 	{
-		new User
+		new IdentityUser
 		{
 			Id = userId,
 			UserName = "santa",
 			NormalizedUserName = "SANTA",
-			PasswordHash = new PasswordHasher<User>().HashPassword(null, "wachtwoord"),
+			PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "wachtwoord"),
 			SecurityStamp = Guid.NewGuid().ToString()
 		}
 	};
 
-    public IEnumerable<Role> RoleSeeder() => new List<Role>()
+    public IEnumerable<IdentityRole> RoleSeeder() => new List<IdentityRole>()
     {
-	    new Role
+	    new IdentityRole
 	    {
-		    Id = 1,
+		    Id = "1",
 		    Name = "Santa",
 		    NormalizedName = "SANTA"
 	    },
-	    new Role
+	    new IdentityRole
 	    {
-		    Id = 2,
+		    Id = "2",
 		    Name = "Child",
 		    NormalizedName = "CHILD"
 	    }
     };
 
-    public IEnumerable<IdentityUserRole<int>> IdentityUserRoleSeeder() => new List<IdentityUserRole<int>>()
+    public IEnumerable<IdentityUserRole<string>> IdentityUserRoleSeeder() => new List<IdentityUserRole<string>>()
     {
-	    new IdentityUserRole<int>
+	    new IdentityUserRole<string>
 	    {
 		    UserId = userId,
-		    RoleId = 1
+		    RoleId = "1"
 	    }
     };
 }

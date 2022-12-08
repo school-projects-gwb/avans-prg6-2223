@@ -12,12 +12,8 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         //Redirect to correct 'default' action based on role
-        if (User.IsInRole("Santa"))
-        {
-            return RedirectToAction("CreateChildren", "WishList");
-        }
-        //todo add child redirects
-
+        if (User.IsInRole("Santa")) return RedirectToAction("CreateChildren", "WishList");
+        if (User.IsInRole("Child")) return RedirectToAction("ChildAbout", "WishList");
         //Fallback
         return View();
     }

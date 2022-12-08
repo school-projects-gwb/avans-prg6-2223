@@ -1,9 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using SantasWishList.Data.Models
 @using static SantasWishList.Web.Helpers.NavigationHelper;
 
-@inject SignInManager<User> SignInManager
+@inject SignInManager<IdentityUser> SignInManager
 
 @{ var controller = this.ViewContext.RouteData.Values["controller"] != null ? this.ViewContext.RouteData.Values["controller"].ToString() : ""; }
 
@@ -17,12 +16,20 @@
                     <i class="md:hidden z-40 fa-solid fa-bars text-4xl cursor-pointer" onclick="toggleNav(event)"></i>
                 </div>
                 <div id="navigationMenu" class="nav-mobile hidden md:inline-block">
-                    @if (User.IsInRole("Santa"))
+                    @if(User.IsInRole("Santa"))
                     {
                         <a class="nav-link mr-4 @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="WishList" asp-action="CreateChildren">
                             Kinderen uitnodigen
                         </a>
                     }
+                    
+                    @if (User.IsInRole("Child"))
+                    {
+                        <a class="nav-link mr-4 @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="WishList" asp-action="ChildAbout">
+                            Mijn verlanglijstje
+                        </a>
+                    }
+                    
                     <form class="inline-block" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
                         <input type="submit" class="nav-link cursor-pointer" value="Uitloggen">
                     </form>

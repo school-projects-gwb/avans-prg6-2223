@@ -7,9 +7,9 @@ namespace SantasWishList.Web.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly SignInManager<User> _signInManager;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager) => _signInManager = signInManager;
+    public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) => _signInManager = signInManager;
     
     public async Task<IActionResult> Login(string returnUrl = null)
     {

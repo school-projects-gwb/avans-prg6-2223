@@ -9,8 +9,8 @@
         <h1 class="text-5xl font-semibold tracking-tight">Lekker bezig, Kerstman!</h1>
         <h3 class="text-2xl leading-10 mt-2">
             Hieronder staan alle
-            <span class="font-semibold @(Model.IsGood ? "text-message-success" : "text-message-error")">
-                @(Model.IsGood ? "lieve" : "stoute")
+            <span class="font-semibold @(Model.IsNaughty ? "text-message-success" : "text-message-error")">
+                @(Model.IsNaughty ? "lieve" : "stoute")
             </span> kinderen die nu in kunnen loggen om hun verlanglijstje aan u door te geven.
         </h3>
         <p class="mt-4 bg-gray-100 rounded-lg p-4">@Model.NameData</p>

@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SantasWishList.Data.Models;
+using SantasWishlist.Domain;
 using SantasWishList.Logic.Helpers;
 using SantasWishList.Web.Models;
 
@@ -10,9 +12,9 @@ namespace SantasWishList.Web.Controllers;
 [Authorize]
 public class WishListController : Controller
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<IdentityUser> _userManager;
     
-    public WishListController(UserManager<User> userManager) => _userManager = userManager;
+    public WishListController(UserManager<IdentityUser> userManager) => _userManager = userManager;
 
     [Authorize(Roles = "Santa")]
     public IActionResult CreateChildren() => View();
@@ -41,17 +43,21 @@ public class WishListController : Controller
         //All data valid, create new users.
         foreach (string name in names)
         {
-            User user = new User();
+            IdentityUser user = new IdentityUser();
             user.UserName = name.ToLower();
-            user.IsGood = model.IsGood;
             user.NormalizedUserName = name.ToUpper();
             user.SecurityStamp = Guid.NewGuid().ToString();
             
             await _userManager.CreateAsync(user, model.Password);
+            await _userManager.AddClaimsAsync(user, new[]
+            {
+                new Claim("IsNaughty", model.IsNaughty.ToString()),
+                new Claim("WishlistSubmitted", false.ToString())
+            });
             await _userManager.AddToRoleAsync(user, "Child");
         }
 
-        //Make sure name data is nicely formatted and they have consistent spacing between comma's.
+        //Make sure name data is nicely formatted and they have consistent spacing after each comma.
         model.NameData = ChildNameDataHelper.GetPrettyNameDataString(model.NameData);
         
         return View("CreateChildrenSuccess", model);
@@ -59,6 +65,21 @@ public class WishListController : Controller
 
     public IActionResult ChildAbout()
     {
+        ViewBag.Name = User.Identity.Name;
         return View();
     }
+
+    [HttpPost]
+    public IActionResult ChildAbout(bool notImplemented)
+    {
+        return RedirectToAction("ChildWishList");
+    }
+
+    public IActionResult ChildWishList()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult ChildWishList(bool notImplemented) => throw new NotImplementedException();
 }

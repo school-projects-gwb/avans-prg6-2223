@@ -11,7 +11,7 @@ public class CreateChildrenViewModel
     public string NameData { get; set; }
     
     [Required]  
-    public bool IsGood { get; set; }
+    public bool IsNaughty { get; set; }
     
     [Required]
     [DataType(DataType.Password)]

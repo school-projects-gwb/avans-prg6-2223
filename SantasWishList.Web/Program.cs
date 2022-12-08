@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using SantasWishList.Data;
-using SantasWishList.Data.Models;
-using SantasWishList.Web.Authorization;
 using SantasWishlist.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Context and Identity, remove password complexity requirements
 builder.Services
     .AddDbContext<DatabaseContext>()
-    .AddIdentity<User, Role>(options =>
+    .AddIdentity<IdentityUser, IdentityRole>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequiredUniqueChars = 0;
@@ -17,7 +15,6 @@ builder.Services
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
     })
-    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
 

@@ -22,123 +22,10 @@ namespace SantasWishList.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.Property<string>("LoginProvider")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            RoleId = 1
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("SantasWishList.Data.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -164,27 +51,49 @@ namespace SantasWishList.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            ConcurrencyStamp = "79cbb912-64ba-4eb0-b229-aac3e4935e8d",
+                            Id = "1",
+                            ConcurrencyStamp = "ae6a7477-ce96-4084-ab77-09776ebf13fd",
                             Name = "Santa",
                             NormalizedName = "SANTA"
                         },
                         new
                         {
-                            Id = 2,
-                            ConcurrencyStamp = "0ed20a6c-2b3d-486f-8e3c-f7e2f8670df3",
+                            Id = "2",
+                            ConcurrencyStamp = "53677a14-d213-416d-b694-1893baa1ef03",
                             Name = "Child",
                             NormalizedName = "CHILD"
                         });
                 });
 
-            modelBuilder.Entity("SantasWishList.Data.Models.User", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -198,12 +107,6 @@ namespace SantasWishList.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsGood")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -249,72 +152,158 @@ namespace SantasWishList.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "051f911b-bc65-4ca2-81b1-2cb718242fff",
+                            ConcurrencyStamp = "dcba882a-7da1-42a8-b706-dfbdc77e2794",
                             EmailConfirmed = false,
-                            IsGood = false,
-                            IsLocked = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "SANTA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAEekKM4Twg/RS1MdFkHLvee3mn7Bk2oeVaI6FGmRwcLDOCXxXrSAm+SRWXytPejhg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELwiyYqIppzPCrk0IqirBak+SUgD/9n2Xdk0hRcO7RcrIh7LJBWhnWroIuMttkC5Jw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8e927218-63f0-4994-ab34-454772f6be4e",
+                            SecurityStamp = "63e8623c-9abd-4230-9c20-7eb751c011e6",
                             TwoFactorEnabled = false,
                             UserName = "santa"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SantasWishList.Data.Models.Role", null)
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "1",
+                            RoleId = "1"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SantasWishList.Data.Models.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SantasWishList.Data.Models.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("SantasWishList.Data.Models.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SantasWishList.Data.Models.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SantasWishList.Data.Models.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

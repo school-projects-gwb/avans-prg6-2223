@@ -52,7 +52,7 @@ namespace SantasWishList.Logic.Validation
              * Maybe we should checkk both name and if someone does charity work here...
              */
             //nice
-            if (child.User.IsGood)
+            if (child.IsNaughty)
             {
                 if (CheckForCharityWork(child.Reasoning)) { return ValidationResult.Success; }
                 WishList wishlist = child.Wishlist;
@@ -133,7 +133,7 @@ namespace SantasWishList.Logic.Validation
              * 
              * with this rule I assumed they have to be nice
              */
-            if (child.User.UserName.ToLower().Equals("stijn"))
+            if (child.Name.ToLower().Equals("stijn"))
             {
                 foreach(Gift gift in child.Wishlist.Wanted)
                 {
