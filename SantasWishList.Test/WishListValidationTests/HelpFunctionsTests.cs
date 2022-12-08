@@ -104,7 +104,7 @@ namespace SantasWishList.Test.WishListValidationTests
             return child;
         }
 
-        public static Child addSpecificGift(Child child)
+        public static Child addSpecificGift(Child child, string giftName)
         {
             IGiftRepository repo = new GiftRepository();
             List<Gift> gifts = repo.GetPossibleGifts();
@@ -112,8 +112,11 @@ namespace SantasWishList.Test.WishListValidationTests
             foreach (Gift gift in gifts)
             {
                 if (child.Wishlist.Wanted.Contains(gift)) { continue; }
-                child.Wishlist.Wanted.Add(gift);
-                break;
+                if (gift.Name.ToLower().Equals(giftName.ToLower()))
+                {
+                    child.Wishlist.Wanted.Add(gift);
+                    break;
+                }
             }
 
             return child;
@@ -133,7 +136,7 @@ namespace SantasWishList.Test.WishListValidationTests
         {
             foreach (ValidationResult result in errors)
             {
-                if (result.ErrorMessage != null)
+                if (result != ValidationResult.Success)
                 {
                     if (result.ErrorMessage.Equals(message))
                     {

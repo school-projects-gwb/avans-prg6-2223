@@ -21,7 +21,7 @@ namespace SantasWishList.Logic.Validation
         {
             this.repo = repo;
         }
-        public List<ValidationResult> ValidateWishList(Child child)
+        public List<ValidationResult> ValidateWishList(Child child, List<string> customGifts)
         {
             
             List<ValidationResult> results = new List<ValidationResult>();
@@ -31,7 +31,7 @@ namespace SantasWishList.Logic.Validation
             results.Add(ValidateLegoOrKnex(child.Wishlist));
             results.Add(ValidateNightLamp(child.Wishlist));
             results.Add(ValidateMusic(child.Wishlist));
-            results.Add(ValidateUniqueGift(child.Wishlist));
+            results.Add(ValidateUniqueGift(customGifts));
             results.Add(ValidateCostumRule(child.Wishlist));
 
             return results;
@@ -58,8 +58,13 @@ namespace SantasWishList.Logic.Validation
                 WishList wishlist = child.Wishlist;
                 if (CheckStijnDolfje(child))
                 {
-                    Gift dolfje = new Gift();
-                    wishlist.Wanted.Remove((Gift)wishlist.Wanted.Where(g => g.Name.Equals("Dolfje Weerwolfje")));
+                    Gift dolfje = null;
+                    foreach(Gift gift in child.Wishlist.Wanted)
+                    {
+                        if(gift.Name.ToLower().Equals("dolfje weerwolfje")) { dolfje = gift; break; }
+                    }
+
+                    if (dolfje != null) { wishlist.Wanted.Remove(dolfje); }
                 }
 
 
@@ -148,9 +153,9 @@ namespace SantasWishList.Logic.Validation
             bool knex = false;
             foreach(Gift gift in wishlist.Wanted)
             {
-                if (gift.Name.ToLower().Contains("lego") && !lego) { lego = true;  }
-                if (gift.Name.ToLower().Contains("k'nex") && !knex) { knex = true; }
-                if(lego && knex) { return new ValidationResult("Je mag niet om beide Lego en K'nex vragen"); }
+                if (gift.Name.ToLower().Equals("lego") && !lego) { lego = true;  }
+                if (gift.Name.ToLower().Equals("k`nex") && !knex) { knex = true; }
+                if(lego && knex) { return new ValidationResult("Je mag niet om beide Lego en K`nex vragen"); }
             }
 
             return ValidationResult.Success;
@@ -180,7 +185,7 @@ namespace SantasWishList.Logic.Validation
              * if a kid asks for a nightlamp (nachtlamp) they also have to ask for
              * underwear (ondergoed)
              */
-            if(CheckCombination("ondergoed", "nachtlamp", wishlist)) { return new ValidationResult("Als je om een nachtlamp vraagt moet je ook om ondergoed vragen."); }
+            if(CheckCombination("ondergoed", "nachtlampje", wishlist)) { return new ValidationResult("Als je om een nachtlampje vraagt moet je ook om ondergoed vragen."); }
             return ValidationResult.Success;
         }
 
@@ -192,7 +197,7 @@ namespace SantasWishList.Logic.Validation
              * earbuds (oordopjes)
              */
 
-            if(CheckCombination("oordopjes", "muziekinstrument", wishlist)) { new ValidationResult("Als je een instrument vraagt moet je ook oordropjes vragen"); }
+            if(CheckCombination("oordopjes", "muziekinstrument", wishlist)) { return new ValidationResult("Als je een instrument vraagt moet je ook oordropjes vragen"); }
             return ValidationResult.Success;
         }
 
@@ -210,7 +215,7 @@ namespace SantasWishList.Logic.Validation
             return false;
         }
 
-        private ValidationResult ValidateUniqueGift(WishList wishlist)
+        private ValidationResult ValidateUniqueGift(List<string> costumWishes)
         {
             /*
              * instructions:
@@ -219,16 +224,15 @@ namespace SantasWishList.Logic.Validation
              */
 
             //I forgot the name of this algortyhm.
+            List<Gift> options = repo.GetPossibleGifts();
 
-            for (int top = 0; top < wishlist.Wanted.Count(); top++)
+            foreach (string asked in costumWishes)
             {
-                for (int bottom = wishlist.Wanted.Count() - 1; bottom > top; bottom--)
+                //TODO: find out what is wrong with this function and why it won't recognise the same object.
+                foreach (Gift option in options)
                 {
-                    if (wishlist.Wanted[top].Name.ToLower().Equals(
-                            wishlist.Wanted[bottom].Name.ToLower()))
-                    {
-                        return new ValidationResult("Je mag maar een keer hetzelfde vragen.");
-                    }
+                    if (asked.ToLower().Equals(option.Name.ToLower())) 
+                    { return new ValidationResult("Waar je extra om vroeg staat al in de lijst."); }
                 }
             }
             return ValidationResult.Success;
