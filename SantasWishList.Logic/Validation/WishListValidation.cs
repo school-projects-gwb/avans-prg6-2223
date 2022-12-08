@@ -1,5 +1,4 @@
-﻿using SantasWishlist.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,11 +9,6 @@ namespace SantasWishList.Logic.Validation
 {
     public class WishListValidation
     {
-        public WishListValidation(IGiftRepository repo)
-        {
-
-        }
-
         public ValidationResult ValidateWishList()
         {
             ValidationResult result;

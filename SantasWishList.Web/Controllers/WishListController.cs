@@ -56,4 +56,9 @@ public class WishListController : Controller
         
         return View("CreateChildrenSuccess", model);
     }
+
+    public IActionResult ChildAbout()
+    {
+        return View();
+    }
 }
