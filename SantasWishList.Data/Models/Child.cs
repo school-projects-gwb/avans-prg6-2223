@@ -8,7 +8,7 @@ namespace SantasWishList.Data.Models
         public Behaviour Behaviour { get; set; }
         public bool HasBeenNice { get; set; }
         public string? Reasoning { get; set; }
-        public Dictionary<GiftCategory, Gift>? Wishlist { get; set; }
+        public List<Gift>? Wishlist { get; set; }
     }
     
     public enum Behaviour
