@@ -17,10 +17,10 @@ namespace SantasWishList.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
@@ -28,7 +28,7 @@ namespace SantasWishList.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -52,7 +52,7 @@ namespace SantasWishList.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -138,7 +138,7 @@ namespace SantasWishList.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -165,16 +165,16 @@ namespace SantasWishList.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "e4e1ceae-aa50-45aa-9ac1-a5cf6c41406c",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            ConcurrencyStamp = "79cbb912-64ba-4eb0-b229-aac3e4935e8d",
+                            Name = "Santa",
+                            NormalizedName = "SANTA"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "0ff2985b-56ca-477a-8a1e-a2fbcbcec4af",
-                            Name = "Temp",
-                            NormalizedName = "TEMP"
+                            ConcurrencyStamp = "0ed20a6c-2b3d-486f-8e3c-f7e2f8670df3",
+                            Name = "Child",
+                            NormalizedName = "CHILD"
                         });
                 });
 
@@ -184,7 +184,7 @@ namespace SantasWishList.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -256,15 +256,15 @@ namespace SantasWishList.Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "36bccef2-ffbf-46ad-8085-12a4907b9a4a",
+                            ConcurrencyStamp = "051f911b-bc65-4ca2-81b1-2cb718242fff",
                             EmailConfirmed = false,
                             IsGood = false,
                             IsLocked = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "SANTA",
-                            PasswordHash = "AQAAAAEAACcQAAAAELemv2SVB8XIypUC3YfgAo39C2VDxAVIM8Ag79VWi8hVK4GkQsAfo+/jnXsCCqBEQg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAEekKM4Twg/RS1MdFkHLvee3mn7Bk2oeVaI6FGmRwcLDOCXxXrSAm+SRWXytPejhg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3549c600-493d-4c9f-84a7-933996f34f22",
+                            SecurityStamp = "8e927218-63f0-4994-ab34-454772f6be4e",
                             TwoFactorEnabled = false,
                             UserName = "santa"
                         });

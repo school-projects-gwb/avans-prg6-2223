@@ -12,7 +12,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         //Redirect to correct 'default' action based on role
-        if (User.IsInRole("Admin"))
+        if (User.IsInRole("Santa"))
         {
             return RedirectToAction("CreateChildren", "WishList");
         }

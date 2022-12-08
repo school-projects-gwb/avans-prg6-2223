@@ -3,14 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace SantasWishList.Data.Migrations
 {
-    /// <inheritdoc />
     public partial class first : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -165,16 +161,17 @@ namespace SantasWishList.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { 1, "e4e1ceae-aa50-45aa-9ac1-a5cf6c41406c", "Admin", "ADMIN" },
-                    { 2, "0ff2985b-56ca-477a-8a1e-a2fbcbcec4af", "Temp", "TEMP" }
-                });
+                values: new object[] { 1, "79cbb912-64ba-4eb0-b229-aac3e4935e8d", "Santa", "SANTA" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { 2, "0ed20a6c-2b3d-486f-8e3c-f7e2f8670df3", "Child", "CHILD" });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsGood", "IsLocked", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "36bccef2-ffbf-46ad-8085-12a4907b9a4a", null, false, false, false, false, null, null, "SANTA", "AQAAAAEAACcQAAAAELemv2SVB8XIypUC3YfgAo39C2VDxAVIM8Ag79VWi8hVK4GkQsAfo+/jnXsCCqBEQg==", null, false, "3549c600-493d-4c9f-84a7-933996f34f22", false, "santa" });
+                values: new object[] { 1, 0, "051f911b-bc65-4ca2-81b1-2cb718242fff", null, false, false, false, false, null, null, "SANTA", "AQAAAAEAACcQAAAAEAEekKM4Twg/RS1MdFkHLvee3mn7Bk2oeVaI6FGmRwcLDOCXxXrSAm+SRWXytPejhg==", null, false, "8e927218-63f0-4994-ab34-454772f6be4e", false, "santa" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -221,7 +218,6 @@ namespace SantasWishList.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

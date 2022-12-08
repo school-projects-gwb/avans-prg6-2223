@@ -24,14 +24,14 @@ public class Seeder
 	    new Role
 	    {
 		    Id = 1,
-		    Name = "Admin",
-		    NormalizedName = "ADMIN"
+		    Name = "Santa",
+		    NormalizedName = "SANTA"
 	    },
 	    new Role
 	    {
 		    Id = 2,
-		    Name = "Temp",
-		    NormalizedName = "TEMP"
+		    Name = "Child",
+		    NormalizedName = "CHILD"
 	    }
     };
 

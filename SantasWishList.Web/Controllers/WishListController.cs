@@ -12,15 +12,12 @@ public class WishListController : Controller
 {
     private readonly UserManager<User> _userManager;
     
-    public WishListController(UserManager<User> userManager)
-    {
-        _userManager = userManager;
-    }
-    
-    [Authorize(Roles = "Admin")]
+    public WishListController(UserManager<User> userManager) => _userManager = userManager;
+
+    [Authorize(Roles = "Santa")]
     public IActionResult CreateChildren() => View();
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Santa")]
     [HttpPost]
     public async Task<IActionResult> CreateChildren(CreateChildrenViewModel model)
     {
@@ -51,6 +48,7 @@ public class WishListController : Controller
             user.SecurityStamp = Guid.NewGuid().ToString();
             
             await _userManager.CreateAsync(user, model.Password);
+            await _userManager.AddToRoleAsync(user, "Child");
         }
 
         //Make sure name data is nicely formatted and they have consistent spacing between comma's.
