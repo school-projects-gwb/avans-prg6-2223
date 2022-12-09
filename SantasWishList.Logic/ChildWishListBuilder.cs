@@ -9,27 +9,47 @@ public class ChildWishListBuilder
 
     public ChildWishListBuilder() => _child = new Child();
     
-    public void SetName(string name) => _child.Name = name;
-
-    public void SetIsNaughty(bool isNaughty) => _child.IsNice = isNaughty;
-
-    public void SetAge(int age) => _child.Age = age;
-
-    public void SetBehaviour(Behaviour behaviour) => _child.Behaviour = behaviour;
-
-    public void SetReasoning(string reasoning) => _child.Reasoning = reasoning;
-
-    public void SetWishList()
+    public ChildWishListBuilder SetName(string name)
     {
-        throw new NotImplementedException();
+        _child.Name = name;
+        return this;
     }
 
-    public Child Build(string child)
+    public ChildWishListBuilder SetIsNice(bool isNaughty)
+    {
+        _child.IsNice = isNaughty;
+        return this;
+    }
+
+    public ChildWishListBuilder SetAge(int age)
+    {
+        _child.Age = age;
+        return this;
+    }
+
+    public ChildWishListBuilder SetBehaviour(Behaviour behaviour)
+    {
+        _child.Behaviour = behaviour;
+        return this;
+    }
+
+    public ChildWishListBuilder SetReasoning(string reasoning)
+    {
+        _child.Reasoning = reasoning;
+        return this;
+    }
+
+    public ChildWishListBuilder SetWishList()
+    {
+        return this;
+    }
+
+    public Child Build()
     {
         //Parse json string
         //Run validation here
         _isBuilt = true;
-        throw new NotImplementedException();
+        return _child;
     }
     
     public string Stringify()

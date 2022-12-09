@@ -57,6 +57,7 @@ public class WishListController : Controller
             await _userManager.CreateAsync(user, model.Password);
             await _userManager.AddClaimsAsync(user, new[]
             {
+
                 new Claim("IsNaughty", model.IsNice.ToString()),
                 new Claim("WishlistSubmitted", false.ToString())
             });
@@ -78,7 +79,15 @@ public class WishListController : Controller
     [HttpPost]
     public IActionResult ChildAbout(ChildAboutViewModel model)
     {
-        // Child child = _childWishListBuilder.SetAboutMe()
+        var x = User.Claims.FirstOrDefault(claim => claim.Type.Equals("IsNice"));
+        Console.WriteLine(x);
+        
+        string childModel = _childWishListBuilder
+            .SetName(User.Identity.Name)
+            // .SetIsNice()
+            .SetAge(model.Age)
+            .Stringify();
+
         return RedirectToAction("ChildWishList");
     }
 
