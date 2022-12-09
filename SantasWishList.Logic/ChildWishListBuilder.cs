@@ -1,4 +1,6 @@
+using Newtonsoft.Json;
 using SantasWishList.Data.Models;
+using SantasWishlist.Domain;
 
 namespace SantasWishList.Logic;
 
@@ -33,14 +35,29 @@ public class ChildWishListBuilder
         return this;
     }
 
-    public ChildWishListBuilder SetReasoning(string reasoning)
+    public ChildWishListBuilder SetReasoning(string? reasoning)
     {
         _child.Reasoning = reasoning;
         return this;
     }
 
-    public ChildWishListBuilder SetWishList()
+    public ChildWishListBuilder SetAdditionalGiftNames(List<string> additionalGiftNames)
     {
+        _child.AdditionalGiftNames = additionalGiftNames;
+        return this;
+    }
+
+    public ChildWishListBuilder SetWishList(List<Gift> gifts)
+    {
+        _child.Wishlist = new WishList { Name = _child.Name, Wanted = gifts };
+        return this;
+    }
+    
+    public string Serialize() => JsonConvert.SerializeObject(_child);
+    
+    public ChildWishListBuilder Deserialize(string serializedChild)
+    {
+        JsonConvert.DeserializeObject(serializedChild);
         return this;
     }
 
@@ -50,11 +67,5 @@ public class ChildWishListBuilder
         //Run validation here
         _isBuilt = true;
         return _child;
-    }
-    
-    public string Stringify()
-    {
-        //JSON stringify object, if _isBuilt == true
-        throw new NotImplementedException();
     }
 }

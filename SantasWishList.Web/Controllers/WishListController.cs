@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
 using SantasWishList.Logic;
@@ -57,8 +58,7 @@ public class WishListController : Controller
             await _userManager.CreateAsync(user, model.Password);
             await _userManager.AddClaimsAsync(user, new[]
             {
-
-                new Claim("IsNaughty", model.IsNice.ToString()),
+                new Claim("IsNice", model.IsNice.ToString()),
                 new Claim("WishlistSubmitted", false.ToString())
             });
             await _userManager.AddToRoleAsync(user, "Child");
@@ -70,32 +70,52 @@ public class WishListController : Controller
         return View("CreateChildrenSuccess", model);
     }
 
+    [Authorize(Roles = "Child")]
     public IActionResult ChildAbout()
     {
         ViewBag.Name = User.Identity.Name;
         return View();
     }
 
+    [Authorize(Roles = "Child")]
     [HttpPost]
-    public IActionResult ChildAbout(ChildAboutViewModel model)
+    public IActionResult ChildAboutSubmit(ChildAboutViewModel model)
     {
-        var x = User.Claims.FirstOrDefault(claim => claim.Type.Equals("IsNice"));
-        Console.WriteLine(x);
+        if (!ModelState.IsValid) return View("ChildAbout");
         
-        string childModel = _childWishListBuilder
+        ChildWishListViewModel viewModel = new ChildWishListViewModel();
+        
+        viewModel.SerializedChild = _childWishListBuilder
             .SetName(User.Identity.Name)
-            // .SetIsNice()
+            .SetIsNice(Convert.ToBoolean(User.Claims.FirstOrDefault(claim => claim.Type.Equals("IsNice")).Value))
             .SetAge(model.Age)
-            .Stringify();
-
-        return RedirectToAction("ChildWishList");
+            .SetBehaviour(model.Behaviour)
+            .SetReasoning(model.Reasoning)
+            .Serialize();
+        
+        return RedirectToAction("ChildWishList", viewModel);
     }
 
-    public IActionResult ChildWishList()
+    public IActionResult ChildWishList(ChildWishListViewModel model)
     {
-        return View();
+        return View(model);
     }
 
     [HttpPost]
-    public IActionResult ChildWishList(bool notImplemented) => throw new NotImplementedException();
+    public IActionResult ChildWishListSubmit(ChildWishListViewModel model)
+    {
+        model.SerializedChild =
+            _childWishListBuilder
+                .Deserialize(model.SerializedChild)
+                .SetWishList(model.ChosenGifts)
+                .SetAdditionalGiftNames(ChildNameDataHelper.GetNamesFromData(model.AdditionalGifts))
+                .Serialize();
+        
+        return View("ChildWishListConfirm", model);
+    }
+
+    public IActionResult ChildWishListConfirm(ChildWishListViewModel model)
+    {
+        return View(model);
+    }
 }

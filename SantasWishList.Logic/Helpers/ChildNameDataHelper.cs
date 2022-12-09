@@ -1,5 +1,5 @@
 namespace SantasWishList.Logic.Helpers;
-
+//todo refactor, change name since it's used for multiple entities 
 public static class ChildNameDataHelper
 {
     public static List<string> GetNamesFromData(string nameData) => 
