@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
 using SantasWishList.Logic;
 using SantasWishList.Logic.Helpers;
@@ -108,6 +109,14 @@ public class WishListController : Controller
 
     [Authorize(Roles = "Child")]
     [HttpGet]
+    public IActionResult ChildWishListRedirect(string serializedChild)
+    {
+        TempData["SerializedChild"] = serializedChild;
+        return Redirect("ChildWishList");
+    }
+    
+    [Authorize(Roles = "Child")]
+    [HttpGet]
     public IActionResult ChildWishList()
     {
         if (!TempData.ContainsKey("SerializedChild")) return RedirectToAction("ChildAbout");
@@ -164,14 +173,29 @@ public class WishListController : Controller
 
     [Authorize(Roles = "Child")]
     [HttpPost, ValidateAntiForgeryToken]
-    public IActionResult ChildWishListConfirmSubmit(ChildWishListConfirmViewModel model)
+    public async Task<IActionResult> ChildWishListConfirmSubmit(ChildWishListConfirmViewModel model)
     {
+        //todo child validate once more
+        Child child = _childWishListBuilder.Deserialize(model.SerializedChild).Build();
+        
+        var validationResult = true;
+        if (!validationResult) throw new NotImplementedException();
+        
+        bool wishlistResult = _giftRepository.SendWishList(child.Wishlist);
+        if (!wishlistResult) throw new NotImplementedException();
+        
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        var deleteResult = await _userManager.DeleteAsync(user);
+        
+        
+        
         throw new NotImplementedException();
     }
 
     private Dictionary<GiftCategory, List<string>> GetGroupedGifts(List<Gift> gifts) => gifts
         .GroupBy(gift => gift.Category)
-        .ToDictionary(gift => gift.Key, gift => gift.Select(gift => gift.Name).ToList());
+        .ToDictionary(gift => gift.Key, gift => gift.Select(gift => gift.Name)
+        .ToList());
     
     private ChildWishListViewModel GetChildWishListViewModel()
     {

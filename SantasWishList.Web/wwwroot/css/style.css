@@ -14,6 +14,10 @@
     @apply bg-white text-black;
 }
 
+.categoryConfirm:not(:first-child) {
+    @apply mt-8;
+}
+
 .btn-secondary {
     @apply bg-white text-black rounded-lg font-bold px-4 py-2 border border-black;
 }

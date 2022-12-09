@@ -6,19 +6,39 @@
 }
 
 <form method="post" asp-action="ChildWishListConfirmSubmit" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
-
-    <div>
+    <h1 class="text-5xl font-semibold tracking-tight">Ben je tevreden met je verlanglijst?</h1>
+     <h3 class="text-2xl leading-10 mt-2">
+        Voordat je je verlanglijst écht verstuurt, kun je hieronder nog een keer de cadeautjes zien die je hebt uitgekozen.
+    </h3>
+    <div class="bg-gray-50 p-8 rounded-lg mt-8">
         @foreach (var giftGroup in Model.ChosenGifts)
         {
-            <h3 class="text-xl font-semibold mb-4 tracking-tight">@giftGroup.Key.ToFormattedText()</h3>
+            <h3 class="confirmtext-xl font-semibold mb-2 tracking-tight categoryConfirm">@giftGroup.Key.ToFormattedText()</h3>
             @foreach (var giftName in giftGroup.Value)
             {
-                <p>@giftName</p>
+                <p class="text-lg ml-2 my-1">@giftName</p>
             }                                                                                
+        }
+        
+        @if (Model.AdditionalGifts != null && Model.AdditionalGifts.Count > 0)
+        {
+            <h3 class="confirmtext-xl font-semibold mb-2 tracking-tight categoryConfirm">Dingen die je zelf extra hebt ingevuld</h3>
+            @foreach (var giftName in Model.AdditionalGifts)
+            {
+                <p class="text-lg ml-2 my-1">@giftName</p>
+            }
         }
     </div>
     
-    @Html.Partial("SubmitButtonComponent", "Verstuur verlanglijstje!")
+    <div class="w-full border-t-2 border-black mt-16">
+        <input type="submit" class="btn-primary w-full md:w-3/4 lg:w-1/2 mt-8" value="Verlanglijst versturen">
+        <a 
+            asp-action="ChildWishListRedirect" 
+            asp-route-serializedChild="@Model.SerializedChild" 
+            class="underline font-semibold inline-block mt-4 lg:mt-0 ml-0 lg:ml-4">
+            Cadeautjes aanpassen
+        </a>
+    </div>
 </form>
 
 @section Scripts {
