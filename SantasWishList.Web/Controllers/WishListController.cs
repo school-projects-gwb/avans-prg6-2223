@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
+using SantasWishList.Logic;
 using SantasWishList.Logic.Helpers;
 using SantasWishList.Web.Models;
 
@@ -13,8 +14,13 @@ namespace SantasWishList.Web.Controllers;
 public class WishListController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly ChildWishListBuilder _childWishListBuilder;
     
-    public WishListController(UserManager<IdentityUser> userManager) => _userManager = userManager;
+    public WishListController(UserManager<IdentityUser> userManager, ChildWishListBuilder childWishListBuilder)
+    {
+        _userManager = userManager;
+        _childWishListBuilder = childWishListBuilder;
+    }
 
     [Authorize(Roles = "Santa")]
     public IActionResult CreateChildren() => View();
@@ -70,8 +76,9 @@ public class WishListController : Controller
     }
 
     [HttpPost]
-    public IActionResult ChildAbout(bool notImplemented)
+    public IActionResult ChildAbout(ChildAboutViewModel model)
     {
+        // Child child = _childWishListBuilder.SetAboutMe()
         return RedirectToAction("ChildWishList");
     }
 

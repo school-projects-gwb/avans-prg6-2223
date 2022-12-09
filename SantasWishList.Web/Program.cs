@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using SantasWishList.Data;
 using SantasWishlist.Domain;
+using SantasWishList.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IGiftRepository, GiftRepository>();
+builder.Services.AddTransient<ChildWishListBuilder>();
 
 var app = builder.Build();
 
