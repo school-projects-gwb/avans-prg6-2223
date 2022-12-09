@@ -7,7 +7,6 @@ namespace SantasWishList.Logic;
 public class ChildWishListBuilder
 {
     private Child _child;
-    private bool _isBuilt;
 
     public ChildWishListBuilder() => _child = new Child();
     
@@ -65,7 +64,6 @@ public class ChildWishListBuilder
     {
         //Parse json string
         //Run validation here
-        _isBuilt = true;
         return _child;
     }
 }

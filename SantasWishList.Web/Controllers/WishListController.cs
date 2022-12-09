@@ -16,11 +16,14 @@ public class WishListController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ChildWishListBuilder _childWishListBuilder;
+    private readonly IGiftRepository _giftRepository;
     
-    public WishListController(UserManager<IdentityUser> userManager, ChildWishListBuilder childWishListBuilder)
+    public WishListController(UserManager<IdentityUser> userManager, ChildWishListBuilder childWishListBuilder,
+        IGiftRepository giftRepository)
     {
         _userManager = userManager;
         _childWishListBuilder = childWishListBuilder;
+        _giftRepository = giftRepository;
     }
 
     [Authorize(Roles = "Santa")]
@@ -82,9 +85,10 @@ public class WishListController : Controller
     public IActionResult ChildAboutSubmit(ChildAboutViewModel model)
     {
         if (!ModelState.IsValid) return View("ChildAbout");
-        
+        //Build viewmodel
         ChildWishListViewModel viewModel = new ChildWishListViewModel();
-        
+        viewModel.PossibleGifts = _giftRepository.GetPossibleGifts();
+        //Add "about" data to child
         viewModel.SerializedChild = _childWishListBuilder
             .SetName(User.Identity.Name)
             .SetIsNice(Convert.ToBoolean(User.Claims.FirstOrDefault(claim => claim.Type.Equals("IsNice")).Value))
@@ -96,19 +100,18 @@ public class WishListController : Controller
         return RedirectToAction("ChildWishList", viewModel);
     }
 
-    public IActionResult ChildWishList(ChildWishListViewModel model)
-    {
-        return View(model);
-    }
+    public IActionResult ChildWishList(ChildWishListViewModel model) => View(model);
 
     [HttpPost]
     public IActionResult ChildWishListSubmit(ChildWishListViewModel model)
     {
+        if (!ModelState.IsValid) return View("ChildWishList");
+        //Add gift data to child
         model.SerializedChild =
             _childWishListBuilder
                 .Deserialize(model.SerializedChild)
                 .SetWishList(model.ChosenGifts)
-                .SetAdditionalGiftNames(ChildNameDataHelper.GetNamesFromData(model.AdditionalGifts))
+                .SetAdditionalGiftNames(ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
                 .Serialize();
         
         return View("ChildWishListConfirm", model);
