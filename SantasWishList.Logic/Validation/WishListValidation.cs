@@ -21,7 +21,7 @@ namespace SantasWishList.Logic.Validation
         {
             this.repo = repo;
         }
-        public List<ValidationResult> ValidateWishList(Child child, List<string> customGifts)
+        public List<ValidationResult> ValidateWishList(Child child)
         {
             
             List<ValidationResult> results = new List<ValidationResult>();
@@ -31,7 +31,7 @@ namespace SantasWishList.Logic.Validation
             results.Add(ValidateLegoOrKnex(child.Wishlist));
             results.Add(ValidateNightLamp(child.Wishlist));
             results.Add(ValidateMusic(child.Wishlist));
-            results.Add(ValidateUniqueGift(customGifts));
+            results.Add(ValidateUniqueGift(child.AdditionalGiftNames));
             results.Add(ValidateCostumRule(child.Wishlist));
 
             return results;

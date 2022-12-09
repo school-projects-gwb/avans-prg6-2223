@@ -11,7 +11,6 @@ namespace SantasWishList.Data.Models
         public Behaviour Behaviour { get; set; }
         public string? Reasoning { get; set; }
         public WishList Wishlist { get; set; }
-        
         public List<string> AdditionalGiftNames { get; set; }
     }
     

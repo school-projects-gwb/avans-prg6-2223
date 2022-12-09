@@ -19,6 +19,7 @@ namespace SantasWishList.Test.WishListValidationTests
             child.IsNice = santaJudgement;
             child.Wishlist = new WishList();
             child.Wishlist.Wanted = new List<Gift>();
+            child.AdditionalGiftNames = new List<string>();
             child.Age = age;
             child.Behaviour = behaviour;
             child.Reasoning = description;
@@ -127,6 +128,7 @@ namespace SantasWishList.Test.WishListValidationTests
             gift.Name = name;
             gift.Category = category;
             child.Wishlist.Wanted.Add(gift);
+            child.AdditionalGiftNames.Add(name);
             
             return child;
         }
