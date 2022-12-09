@@ -1,30 +1,54 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using static SantasWishList.Web.Extensions.GiftCategoryExtension
 @model SantasWishList.Web.Models.ChildWishListViewModel
 
 @{
     ViewData["Title"] = "Verlanglijstje invullen";
 }
 
-<div class="w-full flex justify-center mt-16">
-    <form method="post" asp-action="ChildWishListSubmit" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
-        <input type="hidden" asp-for="SerializedChild">
-        
-        <h1 class="text-5xl font-semibold tracking-tight">Dankjewel @ViewBag.Name</h1>
-        <h3 class="text-2xl leading-10 mt-2">
-            Je mag nu je <span class="text-message-success">cadeautjes</span> kiezen. Voor elke categorie mag je de cadeautjes uitzoeken die je wil krijgen!
-        </h3>
+<form method="post" asp-action="ChildWishListSubmit" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
+    <input type="hidden" asp-for="SerializedChild">
+    
+    <div asp-validation-summary="All">
+    </div>
+    
+    <h1 class="text-5xl font-semibold tracking-tight">Dankjewel @(ViewBag.Name)!</h1>
+    <h3 class="text-2xl leading-10 mt-2">
+        Je mag nu je <span class="text-message-success">cadeautjes</span> kiezen. Voor elke categorie mag je de cadeautjes uitzoeken die je wil krijgen!
+    </h3>
 
-        <div class="grid mt-4 border border-black">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
         @foreach (var giftGroup in Model.PossibleGifts)
         {
-            <div>
-            @foreach (var gift in giftGroup.Value)
-            {
-                
-            }
+            <div class="p-4 flex flex-col bg-gray-50 rounded-lg">
+                <h3 class="text-xl font-semibold mb-4 tracking-tight">@giftGroup.Key.ToFormattedText()</h3>
+                @foreach (var giftName in giftGroup.Value)
+                {
+                    <label class="my-0.5">
+                        <input type="checkbox" name="ChosenGiftNames" value="@giftName"/>
+                        @giftName
+                    </label>
+                }
             </div>
         }
-        </div>
-        
-    </form>
-</div>
+    </div>
+    
+    <h3 class="text-2xl leading-10 my-8">
+        Zijn er cadeautjes die je wil maar die niet hierboven in de lijsten staan? Vul ze hieronder in!
+    </h3>
+    
+    <label asp-for="AdditionalGiftNames" class="mb-1">Overige cadeautjes</label>
+    <input asp-for="AdditionalGiftNames" class="input-text w-full" aria-required="true" autocomplete="off"/>
+    <span asp-validation-for="AdditionalGiftNames" class="text-message-error"></span>
+    <span class="text-gray-600 text-sm ml-0.5 mt-0.5">
+        * Wil je meer dan één cadeautje invullen? gebruik dan comma's tussen de namen!
+        <br/> Voorbeeld: <span class="p-0.5 rounded-lg italic bg-gray-100">MacBook, MTG, iPhone</span>
+    </span>
+    
+    @Html.Partial("SubmitButtonComponent", "Verstuur verlanglijstje!")
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

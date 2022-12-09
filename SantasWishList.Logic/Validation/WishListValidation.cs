@@ -15,9 +15,9 @@ namespace SantasWishList.Logic.Validation
 {
     public class WishListValidation {
 
-        private GiftRepository repo;
+        private IGiftRepository repo;
 
-        public WishListValidation(GiftRepository repo)
+        public WishListValidation(IGiftRepository repo)
         {
             this.repo = repo;
         }

@@ -40,15 +40,15 @@ public class ChildWishListBuilder
         return this;
     }
 
-    public ChildWishListBuilder SetAdditionalGiftNames(List<string> additionalGiftNames)
+    public ChildWishListBuilder SetAdditionalGiftNames(List<string>? additionalGiftNames)
     {
         _child.AdditionalGiftNames = additionalGiftNames;
         return this;
     }
 
-    public ChildWishListBuilder SetWishList(List<Gift> gifts)
+    public ChildWishListBuilder SetWishList(List<Gift> chosenGifts)
     {
-        _child.Wishlist = new WishList { Name = _child.Name, Wanted = gifts };
+        _child.Wishlist = new WishList { Name = _child.Name, Wanted = chosenGifts };
         return this;
     }
     
@@ -56,13 +56,9 @@ public class ChildWishListBuilder
     
     public ChildWishListBuilder Deserialize(string serializedChild)
     {
-        JsonConvert.DeserializeObject(serializedChild);
+        _child = JsonConvert.DeserializeObject<Child>(serializedChild);
         return this;
     }
 
-    public Child Build()
-    {
-        //Run validation here
-        return _child;
-    }
+    public Child Build() => _child;
 }

@@ -29,10 +29,11 @@ public class WishListController : Controller
     }
 
     [Authorize(Roles = "Santa")]
+    [HttpGet]
     public IActionResult CreateChildren() => View();
 
     [Authorize(Roles = "Santa")]
-    [HttpPost]
+    [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateChildren(CreateChildrenViewModel model)
     {
         if (!ModelState.IsValid) return View();
@@ -60,22 +61,28 @@ public class WishListController : Controller
             user.NormalizedUserName = name.ToUpper();
             user.SecurityStamp = Guid.NewGuid().ToString();
             
-            await _userManager.CreateAsync(user, model.Password);
-            await _userManager.AddClaimsAsync(user, new[]
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
             {
-                new Claim("IsNice", model.IsNice.ToString()),
-                new Claim("WishlistSubmitted", false.ToString())
-            });
-            await _userManager.AddToRoleAsync(user, "Child");
+                await _userManager.AddClaimsAsync(user, new[]
+                {
+                    new Claim("IsNice", model.IsNice.ToString()),
+                    new Claim("WishlistSubmitted", false.ToString())
+                });
+                
+                await _userManager.AddToRoleAsync(user, "Child");
+            }
         }
 
         //Make sure name data is nicely formatted and they have consistent spacing after each comma.
         model.NameData = ChildNameDataHelper.GetPrettyNameDataString(model.NameData);
-        
+        //todo decouple this view from post request
         return View("CreateChildrenSuccess", model);
     }
 
     [Authorize(Roles = "Child")]
+    [HttpGet]
     public IActionResult ChildAbout()
     {
         ViewBag.Name = User.Identity.Name;
@@ -83,63 +90,94 @@ public class WishListController : Controller
     }
 
     [Authorize(Roles = "Child")]
-    [HttpPost]
+    [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ChildAboutSubmit(ChildAboutViewModel model)
     {
         if (!ModelState.IsValid) return View("ChildAbout");
-        //Build viewmodel
-        ChildWishListViewModel viewModel = new ChildWishListViewModel();
-        viewModel.PossibleGifts = 
-            _giftRepository
-                .GetPossibleGifts().GroupBy(gift => gift.Category)
-                .ToDictionary(gift => gift.Key, gift => gift.Select(gift => gift.Name).ToList());
         
-        //Add "about" data to child
-        viewModel.SerializedChild = _childWishListBuilder
+        TempData["SerializedChild"] = _childWishListBuilder
             .SetName(User.Identity.Name)
             .SetIsNice(Convert.ToBoolean(User.Claims.FirstOrDefault(claim => claim.Type.Equals("IsNice")).Value))
             .SetAge(model.Age)
             .SetBehaviour(model.Behaviour)
             .SetReasoning(model.Reasoning)
             .Serialize();
-        
-        return RedirectToAction("ChildWishList", viewModel);
+
+        return RedirectToAction("ChildWishList");
     }
 
-    public IActionResult ChildWishList(ChildWishListViewModel model)
+    [Authorize(Roles = "Child")]
+    [HttpGet]
+    public IActionResult ChildWishList()
     {
-        ViewBag.Name = User.Identity.Name;
-        return View(model);
-    }
+        if (!TempData.ContainsKey("SerializedChild")) return RedirectToAction("ChildAbout");
 
-    [HttpPost]
+        var viewModel = GetChildWishListViewModel();
+        viewModel.SerializedChild = TempData["SerializedChild"].ToString();
+        ViewBag.Name = User.Identity.Name;
+
+        return View(viewModel);
+    }
+    
+    [Authorize(Roles = "Child")]
+    [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ChildWishListSubmit(ChildWishListViewModel model)
     {
-        if (!ModelState.IsValid) return View("ChildWishList");
-        //Add gift data to child
-        model.SerializedChild =
-            _childWishListBuilder
+        ModelState.Remove("PossibleGifts");
+        if (!ModelState.IsValid) return View("ChildWishList", GetChildWishListViewModel());
+
+        // List<ValidationResult> errorList = _wishListValidator.ValidateWishList(_childWishListBuilder.Deserialize(model.SerializedChild).Build());
+        //
+        // foreach(ValidationResult result in errorList)
+        // {
+        //     if(result != ValidationResult.Success)
+        //     {
+        //         ModelState.AddModelError("error", result.ErrorMessage);
+        //         return View("ChildWishListConfirm");
+        //     }
+        // }
+
+        TempData["SerializedChild"] = _childWishListBuilder
                 .Deserialize(model.SerializedChild)
-                .SetWishList(model.ChosenGifts)
-                .SetAdditionalGiftNames(ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
+                .SetWishList(_giftRepository.GetPossibleGifts().Where(gift => model.ChosenGiftNames.Contains(gift.Name)).ToList())
+                .SetAdditionalGiftNames(model.AdditionalGiftNames == null ? null : ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
                 .Serialize();
-        
-        List<ValidationResult> errorList = _wishListValidator.ValidateWishList(_childWishListBuilder.Deserialize(model.SerializedChild).Build());
 
-        foreach(ValidationResult result in errorList)
-        {
-            if(result != ValidationResult.Success)
-            {
-                ModelState.AddModelError("error", result.ErrorMessage);
-                return View("ChildWishListConfirm");
-            }
-        }
-
-        return View("ChildWishListConfirm", model);
+        return RedirectToAction("ChildWishListConfirm");
     }
 
-    public IActionResult ChildWishListConfirm(ChildWishListViewModel model)
+    [Authorize(Roles = "Child")]
+    [HttpGet]
+    public IActionResult ChildWishListConfirm()
     {
-        return View(model);
+        if (!TempData.ContainsKey("SerializedChild")) return RedirectToAction("ChildAbout");
+        
+        var child = _childWishListBuilder.Deserialize(TempData["SerializedChild"].ToString()).Build();
+
+        var viewModel = new ChildWishListConfirmViewModel();
+        viewModel.SerializedChild = TempData["SerializedChild"].ToString();
+        viewModel.ChosenGifts = GetGroupedGifts(child.Wishlist.Wanted);
+        viewModel.AdditionalGifts = child.AdditionalGiftNames;
+
+        return View(viewModel);
+    }
+
+    [Authorize(Roles = "Child")]
+    [HttpPost, ValidateAntiForgeryToken]
+    public IActionResult ChildWishListConfirmSubmit(ChildWishListConfirmViewModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+    private Dictionary<GiftCategory, List<string>> GetGroupedGifts(List<Gift> gifts) => gifts
+        .GroupBy(gift => gift.Category)
+        .ToDictionary(gift => gift.Key, gift => gift.Select(gift => gift.Name).ToList());
+    
+    private ChildWishListViewModel GetChildWishListViewModel()
+    {
+        ChildWishListViewModel viewModel = new ChildWishListViewModel();
+        viewModel.PossibleGifts = GetGroupedGifts(_giftRepository.GetPossibleGifts());
+
+        return viewModel;
     }
 }

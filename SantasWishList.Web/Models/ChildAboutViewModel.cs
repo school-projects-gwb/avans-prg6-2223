@@ -9,8 +9,8 @@ using System.Configuration;
 public class ChildAboutViewModel
 {
     [Required]
-    [RegularExpression("([0-9]+)", ErrorMessage ="Voer alleen vijfers in")]
-    [Range(typeof(int), "3", "18", ErrorMessage ="Je moet tussen de 3 en 18 jaar oud zijn.")]
+    [RegularExpression("([0-9]+)", ErrorMessage ="Voer alleen cijfers in")]
+    [Range(3, 18, ErrorMessage ="Je moet tussen de 3 en 18 jaar oud zijn.")]
     public int Age { get; set; }
     
     [Required]

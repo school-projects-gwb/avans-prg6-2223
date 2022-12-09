@@ -12,7 +12,9 @@
 <body>
     <main class="w-full flex flex-col min-h-screen">
         <partial name="_Navigation" />
-        @RenderBody()
+        <div class="w-full flex justify-center mt-16">
+            @RenderBody()
+        </div>
     </main>
     <footer class="w-full py-2 bg-black text-white text-center">
         &copy; @DateTime.Now.Year Santa's wishlist
