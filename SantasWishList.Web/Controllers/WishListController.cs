@@ -1,12 +1,12 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
 using SantasWishList.Logic;
 using SantasWishList.Logic.Helpers;
+using SantasWishList.Logic.Validation;
 using SantasWishList.Web.Models;
 
 namespace SantasWishList.Web.Controllers;
@@ -17,13 +17,15 @@ public class WishListController : Controller
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ChildWishListBuilder _childWishListBuilder;
     private readonly IGiftRepository _giftRepository;
+    private readonly WishListValidation _wishListValidator;
     
     public WishListController(UserManager<IdentityUser> userManager, ChildWishListBuilder childWishListBuilder,
-        IGiftRepository giftRepository)
+        IGiftRepository giftRepository, WishListValidation wishListValidator)
     {
         _userManager = userManager;
         _childWishListBuilder = childWishListBuilder;
         _giftRepository = giftRepository;
+        _wishListValidator = wishListValidator;
     }
 
     [Authorize(Roles = "Santa")]
@@ -87,7 +89,11 @@ public class WishListController : Controller
         if (!ModelState.IsValid) return View("ChildAbout");
         //Build viewmodel
         ChildWishListViewModel viewModel = new ChildWishListViewModel();
-        viewModel.PossibleGifts = _giftRepository.GetPossibleGifts();
+        viewModel.PossibleGifts = 
+            _giftRepository
+                .GetPossibleGifts().GroupBy(gift => gift.Category)
+                .ToDictionary(gift => gift.Key, gift => gift.Select(gift => gift.Name).ToList());
+        
         //Add "about" data to child
         viewModel.SerializedChild = _childWishListBuilder
             .SetName(User.Identity.Name)
@@ -100,7 +106,11 @@ public class WishListController : Controller
         return RedirectToAction("ChildWishList", viewModel);
     }
 
-    public IActionResult ChildWishList(ChildWishListViewModel model) => View(model);
+    public IActionResult ChildWishList(ChildWishListViewModel model)
+    {
+        ViewBag.Name = User.Identity.Name;
+        return View(model);
+    }
 
     [HttpPost]
     public IActionResult ChildWishListSubmit(ChildWishListViewModel model)
@@ -114,6 +124,17 @@ public class WishListController : Controller
                 .SetAdditionalGiftNames(ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
                 .Serialize();
         
+        List<ValidationResult> errorList = _wishListValidator.ValidateWishList(_childWishListBuilder.Deserialize(model.SerializedChild).Build());
+
+        foreach(ValidationResult result in errorList)
+        {
+            if(result != ValidationResult.Success)
+            {
+                ModelState.AddModelError("error", result.ErrorMessage);
+                return View("ChildWishListConfirm");
+            }
+        }
+
         return View("ChildWishListConfirm", model);
     }
 

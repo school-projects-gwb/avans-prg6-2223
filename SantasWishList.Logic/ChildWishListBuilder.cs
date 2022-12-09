@@ -62,7 +62,6 @@ public class ChildWishListBuilder
 
     public Child Build()
     {
-        //Parse json string
         //Run validation here
         return _child;
     }

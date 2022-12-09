@@ -7,8 +7,7 @@ namespace SantasWishList.Web.Models
     public class ChildWishListViewModel
     {
         public string SerializedChild { get; set; }
-        
-        public List<Gift> PossibleGifts { get; set; }
+        public Dictionary<GiftCategory, List<string>> PossibleGifts { get; set; }
         public List<Gift> ChosenGifts { get; set; }
         
         [RegularExpression(@"^([A-Za-z0-9]+,\s*)*[A-Za-z0-9]+$", ErrorMessage = "Gebruik a-z, cijfers en comma's. Maar zeker dat er geen onnodige comma's of spaties overblijven.")]

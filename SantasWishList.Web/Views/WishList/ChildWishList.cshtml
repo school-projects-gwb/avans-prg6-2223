@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SantasWishList.Web.Models.ChildWishListViewModel
 
 @{
@@ -6,12 +7,24 @@
 
 <div class="w-full flex justify-center mt-16">
     <form method="post" asp-action="ChildWishListSubmit" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
-        <h1 class="text-5xl font-semibold tracking-tight">Dankjewel (Naam!)</h1>
+        <input type="hidden" asp-for="SerializedChild">
+        
+        <h1 class="text-5xl font-semibold tracking-tight">Dankjewel @ViewBag.Name</h1>
         <h3 class="text-2xl leading-10 mt-2">
             Je mag nu je <span class="text-message-success">cadeautjes</span> kiezen. Voor elke categorie mag je de cadeautjes uitzoeken die je wil krijgen!
         </h3>
-        
-        <input type="hidden" asp-for="SerializedChild">
+
+        <div class="grid mt-4 border border-black">
+        @foreach (var giftGroup in Model.PossibleGifts)
+        {
+            <div>
+            @foreach (var gift in giftGroup.Value)
+            {
+                
+            }
+            </div>
+        }
+        </div>
         
     </form>
 </div>
