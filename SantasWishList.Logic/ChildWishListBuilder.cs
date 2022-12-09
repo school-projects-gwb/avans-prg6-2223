@@ -11,7 +11,7 @@ public class ChildWishListBuilder
     
     public void SetName(string name) => _child.Name = name;
 
-    public void SetIsNaughty(bool isNaughty) => _child.IsNaughty = isNaughty;
+    public void SetIsNaughty(bool isNaughty) => _child.IsNice = isNaughty;
 
     public void SetAge(int age) => _child.Age = age;
 

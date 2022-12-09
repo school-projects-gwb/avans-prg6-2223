@@ -52,7 +52,7 @@ namespace SantasWishList.Logic.Validation
              * Maybe we should checkk both name and if someone does charity work here...
              */
             //nice
-            if (child.IsNaughty)
+            if (child.IsNice)
             {
                 if (CheckForCharityWork(child.Reasoning)) { return ValidationResult.Success; }
                 WishList wishlist = child.Wishlist;

@@ -6,7 +6,7 @@ namespace SantasWishList.Data.Models
     public class Child
     {
         public string Name { get; set; }
-        public bool IsNaughty { get; set; }
+        public bool IsNice { get; set; }
         public int Age { get; set; }
         public Behaviour Behaviour { get; set; }
         public string? Reasoning { get; set; }

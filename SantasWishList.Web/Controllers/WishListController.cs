@@ -57,7 +57,7 @@ public class WishListController : Controller
             await _userManager.CreateAsync(user, model.Password);
             await _userManager.AddClaimsAsync(user, new[]
             {
-                new Claim("IsNaughty", model.IsNaughty.ToString()),
+                new Claim("IsNaughty", model.IsNice.ToString()),
                 new Claim("WishlistSubmitted", false.ToString())
             });
             await _userManager.AddToRoleAsync(user, "Child");
