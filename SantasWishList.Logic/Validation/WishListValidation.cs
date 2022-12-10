@@ -215,7 +215,7 @@ namespace SantasWishList.Logic.Validation
             return false;
         }
 
-        private ValidationResult ValidateUniqueGift(List<string> costumWishes)
+        private ValidationResult ValidateUniqueGift(List<string>? customWishes)
         {
             /*
              * instructions:
@@ -223,10 +223,12 @@ namespace SantasWishList.Logic.Validation
              * make sure it is not in the list.
              */
 
+            if (customWishes == null || !customWishes.Any()) return ValidationResult.Success;
+            
             //I forgot the name of this algortyhm.
             List<Gift> options = repo.GetPossibleGifts();
 
-            foreach (string asked in costumWishes)
+            foreach (string asked in customWishes)
             {
                 //TODO: find out what is wrong with this function and why it won't recognise the same object.
                 foreach (Gift option in options)

@@ -57,6 +57,7 @@ public class ChildWishListBuilder
     public ChildWishListBuilder Deserialize(string serializedChild)
     {
         _child = JsonConvert.DeserializeObject<Child>(serializedChild);
+
         return this;
     }
 

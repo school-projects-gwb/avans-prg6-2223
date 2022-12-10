@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using SantasWishList.Web.Models;
 
 namespace SantasWishList.Web.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Child")]
 public class WishListController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
@@ -28,69 +29,14 @@ public class WishListController : Controller
         _giftRepository = giftRepository;
         _wishListValidator = wishListValidator;
     }
-
-    [Authorize(Roles = "Santa")]
-    [HttpGet]
-    public IActionResult CreateChildren() => View();
-
-    [Authorize(Roles = "Santa")]
-    [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateChildren(CreateChildrenViewModel model)
-    {
-        if (!ModelState.IsValid) return View();
-        var names = ChildNameDataHelper.GetNamesFromData(model.NameData);
-        
-        //todo possibly move to somewhere in logic layer
-        //Check duplicates and return with list of duplicate usernames
-        var existingUsers = new List<string>();   
-        foreach (var name in names)
-            if (await _userManager.FindByNameAsync(name) != null) existingUsers.Add(name);
-        
-        if (existingUsers.Count > 0)
-        {
-            ModelState.AddModelError(
-                "NameData",
-        "De volgende kinderen zijn al geregistreerd: " + string.Join(", ", existingUsers.ToArray()));
-            return View();
-        }
-
-        //All data valid, create new users.
-        foreach (string name in names)
-        {
-            IdentityUser user = new IdentityUser();
-            user.UserName = name.ToLower();
-            user.NormalizedUserName = name.ToUpper();
-            user.SecurityStamp = Guid.NewGuid().ToString();
-            
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddClaimsAsync(user, new[]
-                {
-                    new Claim("IsNice", model.IsNice.ToString()),
-                    new Claim("WishlistSubmitted", false.ToString())
-                });
-                
-                await _userManager.AddToRoleAsync(user, "Child");
-            }
-        }
-
-        //Make sure name data is nicely formatted and they have consistent spacing after each comma.
-        model.NameData = ChildNameDataHelper.GetPrettyNameDataString(model.NameData);
-        //todo decouple this view from post request
-        return View("CreateChildrenSuccess", model);
-    }
-
-    [Authorize(Roles = "Child")]
+    
     [HttpGet]
     public IActionResult ChildAbout()
     {
         ViewBag.Name = User.Identity.Name;
         return View();
     }
-
-    [Authorize(Roles = "Child")]
+    
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ChildAboutSubmit(ChildAboutViewModel model)
     {
@@ -106,8 +52,7 @@ public class WishListController : Controller
 
         return RedirectToAction("ChildWishList");
     }
-
-    [Authorize(Roles = "Child")]
+    
     [HttpGet]
     public IActionResult ChildWishListRedirect(string serializedChild)
     {
@@ -115,7 +60,6 @@ public class WishListController : Controller
         return Redirect("ChildWishList");
     }
     
-    [Authorize(Roles = "Child")]
     [HttpGet]
     public IActionResult ChildWishList()
     {
@@ -128,34 +72,33 @@ public class WishListController : Controller
         return View(viewModel);
     }
     
-    [Authorize(Roles = "Child")]
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ChildWishListSubmit(ChildWishListViewModel model)
     {
+        //Don't validate PossibleGifts.
         ModelState.Remove("PossibleGifts");
         if (!ModelState.IsValid) return View("ChildWishList", GetChildWishListViewModel());
+        
+        //Deserialize and set Child wishlist and gift data
+        Child child = _childWishListBuilder
+            .Deserialize(model.SerializedChild)
+            .SetWishList(_giftRepository.GetPossibleGifts().Where(gift => model.ChosenGiftNames.Contains(gift.Name)).ToList())
+            .SetAdditionalGiftNames(model.AdditionalGiftNames == null ? null : ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
+            .Build();
+        
+        //Validate child, return errors when present
+        List<ValidationResult> errorList = _wishListValidator.ValidateWishList(child);
+        
+        foreach(ValidationResult result in errorList.Where(vr => vr != ValidationResult.Success))
+            ModelState.AddModelError("error", result.ErrorMessage);
+        
+        if (errorList.Any(vr => vr != ValidationResult.Success)) return View("ChildWishListConfirm");
 
-        // List<ValidationResult> errorList = _wishListValidator.ValidateWishList(_childWishListBuilder.Deserialize(model.SerializedChild).Build());
-        //
-        // foreach(ValidationResult result in errorList)
-        // {
-        //     if(result != ValidationResult.Success)
-        //     {
-        //         ModelState.AddModelError("error", result.ErrorMessage);
-        //         return View("ChildWishListConfirm");
-        //     }
-        // }
-
-        TempData["SerializedChild"] = _childWishListBuilder
-                .Deserialize(model.SerializedChild)
-                .SetWishList(_giftRepository.GetPossibleGifts().Where(gift => model.ChosenGiftNames.Contains(gift.Name)).ToList())
-                .SetAdditionalGiftNames(model.AdditionalGiftNames == null ? null : ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
-                .Serialize();
+        TempData["SerializedChild"] = _childWishListBuilder.Serialize();
 
         return RedirectToAction("ChildWishListConfirm");
     }
-
-    [Authorize(Roles = "Child")]
+    
     [HttpGet]
     public IActionResult ChildWishListConfirm()
     {
@@ -170,8 +113,7 @@ public class WishListController : Controller
 
         return View(viewModel);
     }
-
-    [Authorize(Roles = "Child")]
+    
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> ChildWishListConfirmSubmit(ChildWishListConfirmViewModel model)
     {
@@ -186,9 +128,7 @@ public class WishListController : Controller
         
         var user = await _userManager.FindByNameAsync(User.Identity.Name);
         var deleteResult = await _userManager.DeleteAsync(user);
-        
-        
-        
+
         throw new NotImplementedException();
     }
 
