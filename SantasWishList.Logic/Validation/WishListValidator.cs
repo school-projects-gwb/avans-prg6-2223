@@ -108,8 +108,9 @@ namespace SantasWishList.Logic.Validation
             return true;
         }
 
-        private bool CheckForCharityWork(string description)
+        private bool CheckForCharityWork(string? description)
         {
+            if (description == null) return true;
             /*
              * instructions:
              * Check if a kid used "vrijwilligerswerk" in their description.

@@ -86,15 +86,16 @@ public class WishListController : Controller
             .SetAdditionalGiftNames(model.AdditionalGiftNames == null ? null : ChildNameDataHelper.GetNamesFromData(model.AdditionalGiftNames))
             .Build();
         
+        TempData["SerializedChild"] = _childWishListBuilder.Serialize();
+        
         //Validate child, return errors when present
         List<ValidationResult> errorList = _wishListValidator.ValidateWishList(child);
         
         foreach(ValidationResult result in errorList.Where(vr => vr != ValidationResult.Success))
             ModelState.AddModelError("error", result.ErrorMessage);
         
-        if (errorList.Any(vr => vr != ValidationResult.Success)) return View("ChildWishListConfirm");
-
-        TempData["SerializedChild"] = _childWishListBuilder.Serialize();
+        if (errorList.Any(vr => vr != ValidationResult.Success)) 
+            return View("ChildWishList", GetChildWishListViewModel());
 
         return RedirectToAction("ChildWishListConfirm");
     }
@@ -117,19 +118,20 @@ public class WishListController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> ChildWishListConfirmSubmit(ChildWishListConfirmViewModel model)
     {
-        //todo child validate once more
         Child child = _childWishListBuilder.Deserialize(model.SerializedChild).Build();
-        
-        var validationResult = true;
-        if (!validationResult) throw new NotImplementedException();
-        
-        bool wishlistResult = _giftRepository.SendWishList(child.Wishlist);
-        if (!wishlistResult) throw new NotImplementedException();
-        
-        var user = await _userManager.FindByNameAsync(User.Identity.Name);
-        var deleteResult = await _userManager.DeleteAsync(user);
 
-        throw new NotImplementedException();
+        //Validate child and send wishlist, return to error page when this goes wrong.
+        bool isValid = !_wishListValidator.ValidateWishList(child).Where(vr => vr != ValidationResult.Success).Any(),
+             isSent = _giftRepository.SendWishList(child.Wishlist);
+
+        if (!isValid || !isSent)
+            return RedirectToAction("WishListError", "Home");
+        
+        //Delete user
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        await _userManager.DeleteAsync(user);
+
+        return RedirectToAction("LogOut", "Account", new { returnAction = "WishListSuccess" });
     }
 
     private Dictionary<GiftCategory, List<string>> GetGroupedGifts(List<Gift> gifts) => gifts

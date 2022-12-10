@@ -29,10 +29,8 @@
                             Mijn verlanglijstje
                         </a>
                     }
-                    
-                    <form class="inline-block" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                        <input type="submit" class="nav-link cursor-pointer" value="Uitloggen">
-                    </form>
+                        
+                    <a asp-controller="Account" asp-action="Logout" asp-route-returnAction="Index">Uitloggen</a>
                 </div>
             </div>
         </nav>

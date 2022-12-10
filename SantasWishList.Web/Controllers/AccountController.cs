@@ -39,10 +39,10 @@ public class AccountController : Controller
         return View(model);
     }
     
-    [HttpPost]
-    public async Task<IActionResult> Logout(string returnUrl = null)
+    [HttpGet]
+    public async Task<IActionResult> Logout(string returnAction = "index")
     {
         await _signInManager.SignOutAsync();
-        return LocalRedirect("/");
+        return RedirectToAction(returnAction, "Home");
     }
 }

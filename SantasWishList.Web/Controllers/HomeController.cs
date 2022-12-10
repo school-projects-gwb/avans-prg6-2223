@@ -6,9 +6,9 @@ using SantasWishList.Web.Models;
 
 namespace SantasWishList.Web.Controllers;
 
-[Authorize]
 public class HomeController : Controller
 {
+    [Authorize]
     public IActionResult Index()
     {
         //Redirect to correct 'default' action based on role
@@ -19,9 +19,13 @@ public class HomeController : Controller
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+    public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+    [HttpGet]
+    public IActionResult WishListSuccess() => View();
+
+    [HttpGet]
+    [Route("WishListError")]
+    public IActionResult WishListError() => View();
 }
 
