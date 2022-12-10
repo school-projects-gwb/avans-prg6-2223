@@ -14,7 +14,7 @@ namespace SantasWishList.Test.WishListValidationTests
 {
     public class TestingGiftSpecificRules
     {
-        private WishListValidation validation = new WishListValidation(new GiftRepository());
+        private WishListValidator _validator = new WishListValidator(new GiftRepository());
 
         [Fact]
         public void LegoAndKnex()
@@ -22,13 +22,13 @@ namespace SantasWishList.Test.WishListValidationTests
             Child child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, "K`NEX");
 
-            List<ValidationResult> errors = validation.ValidateWishList(child);
+            List<ValidationResult> errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
             child = HelpFunctionsTests.addSpecificGift(child, "LeGo");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(6, HelpFunctionsTests.countSuccesses(errors));
             Assert.True(HelpFunctionsTests.searchError("Je mag niet om beide Lego en K`nex vragen", errors));
@@ -36,13 +36,13 @@ namespace SantasWishList.Test.WishListValidationTests
             child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, "LEgO");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
             child = HelpFunctionsTests.addSpecificGift(child, "k`nex");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(6, HelpFunctionsTests.countSuccesses(errors));
             Assert.True(HelpFunctionsTests.searchError("Je mag niet om beide Lego en K`nex vragen", errors));
@@ -61,13 +61,13 @@ namespace SantasWishList.Test.WishListValidationTests
             Child child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 10, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, "spelcomputer");
 
-            List<ValidationResult> errors = validation.ValidateWishList(child);
+            List<ValidationResult> errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
             child = HelpFunctionsTests.addSpecificGift(child, "usb kabel");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(6, HelpFunctionsTests.countSuccesses(errors));
             Assert.True(HelpFunctionsTests.searchError("Je mag maar een cadeautje kiezen waar je te jong voor bent", errors));
@@ -79,13 +79,13 @@ namespace SantasWishList.Test.WishListValidationTests
             Child child = HelpFunctionsTests.makeChild("Stijn", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.AddGiftsPerCatagory(child, 3);
 
-            List<ValidationResult> errors = validation.ValidateWishList(child);
+            List<ValidationResult> errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
             child = HelpFunctionsTests.addSpecificGift(child, "dolfje weerwolfje");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
         }
@@ -108,20 +108,20 @@ namespace SantasWishList.Test.WishListValidationTests
             Child child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, solo);
 
-            List<ValidationResult> errors = validation.ValidateWishList(child);
+            List<ValidationResult> errors = _validator.ValidateWishList(child);
 
             if(HelpFunctionsTests.countSuccesses(errors) != 7) { return null; }
 
             child = HelpFunctionsTests.addSpecificGift(child, combined);
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             if (HelpFunctionsTests.countSuccesses(errors) != 7) { return null; }
 
             child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, combined);
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             if (HelpFunctionsTests.countSuccesses(errors) != 6) { return null; }
             foreach(ValidationResult result in errors)
@@ -134,7 +134,7 @@ namespace SantasWishList.Test.WishListValidationTests
 
             child = HelpFunctionsTests.addSpecificGift(child, solo);
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             if (HelpFunctionsTests.countSuccesses(errors) != 7) { return null; }
             return errorMessage;
@@ -146,7 +146,7 @@ namespace SantasWishList.Test.WishListValidationTests
             Child child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, "lego");
 
-            List<ValidationResult> errors = validation.ValidateWishList(child);
+            List<ValidationResult> errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
@@ -154,7 +154,7 @@ namespace SantasWishList.Test.WishListValidationTests
 
             child.AdditionalGiftNames.Add("Lego");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(6, HelpFunctionsTests.countSuccesses(errors));
             Assert.True(HelpFunctionsTests.searchError("Waar je extra om vroeg staat al in de lijst.", errors));
@@ -166,13 +166,13 @@ namespace SantasWishList.Test.WishListValidationTests
             Child child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, "lego");
 
-            List<ValidationResult> errors = validation.ValidateWishList(child);
+            List<ValidationResult> errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
             child = HelpFunctionsTests.addCostumGift(child, "chocoladeletter", GiftCategory.NEED);
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(6, HelpFunctionsTests.countSuccesses(errors));
             Assert.True(HelpFunctionsTests.searchError("Ik ben toch zeker Sinterklaas niet.", errors));
@@ -180,13 +180,13 @@ namespace SantasWishList.Test.WishListValidationTests
             child = HelpFunctionsTests.makeChild("Daan", "Een gamer", 20, true, Behaviour.BRAAF);
             child = HelpFunctionsTests.addSpecificGift(child, "lego");
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(7, HelpFunctionsTests.countSuccesses(errors));
 
             child = HelpFunctionsTests.addCostumGift(child, "pepernoten", GiftCategory.NEED);
 
-            errors = validation.ValidateWishList(child);
+            errors = _validator.ValidateWishList(child);
 
             Assert.Equal(6, HelpFunctionsTests.countSuccesses(errors));
             Assert.True(HelpFunctionsTests.searchError("Ik ben toch zeker Sinterklaas niet.", errors));

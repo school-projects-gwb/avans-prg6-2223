@@ -19,10 +19,10 @@ public class WishListController : Controller
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ChildWishListBuilder _childWishListBuilder;
     private readonly IGiftRepository _giftRepository;
-    private readonly WishListValidation _wishListValidator;
+    private readonly WishListValidator _wishListValidator;
     
     public WishListController(UserManager<IdentityUser> userManager, ChildWishListBuilder childWishListBuilder,
-        IGiftRepository giftRepository, WishListValidation wishListValidator)
+        IGiftRepository giftRepository, WishListValidator wishListValidator)
     {
         _userManager = userManager;
         _childWishListBuilder = childWishListBuilder;

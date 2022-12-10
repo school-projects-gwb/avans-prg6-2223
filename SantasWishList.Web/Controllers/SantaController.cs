@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SantasWishList.Logic.Helpers;
+using SantasWishList.Logic.Validation;
 using SantasWishList.Web.Models;
 
 namespace SantasWishList.Web.Controllers;
@@ -11,8 +13,13 @@ namespace SantasWishList.Web.Controllers;
 public class SantaController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
-
-    public SantaController(UserManager<IdentityUser> userManager) => _userManager = userManager;
+    private readonly DuplicateUserValidator _duplicateUserValidator;
+    
+    public SantaController(UserManager<IdentityUser> userManager, DuplicateUserValidator duplicateUserValidator)
+    {
+        _userManager = userManager;
+        _duplicateUserValidator = duplicateUserValidator;
+    }
 
     [HttpGet]
     public IActionResult CreateChildren() => View();
@@ -20,20 +27,15 @@ public class SantaController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateChildren(CreateChildrenViewModel model)
     {
+        //Validate and check for duplicate users
         if (!ModelState.IsValid) return View();
         var names = ChildNameDataHelper.GetNamesFromData(model.NameData);
-        
-        //todo possibly move to somewhere in logic layer
-        //Check duplicates and return with list of duplicate usernames
-        var existingUsers = new List<string>();   
-        foreach (var name in names)
-            if (await _userManager.FindByNameAsync(name) != null) existingUsers.Add(name);
-        
-        if (existingUsers.Count > 0)
+
+        var validation = await _duplicateUserValidator.ValidateDuplicateUsers(names);
+
+        if (validation != ValidationResult.Success)
         {
-            ModelState.AddModelError(
-                "NameData",
-        "De volgende kinderen zijn al geregistreerd: " + string.Join(", ", existingUsers.ToArray()));
+            ModelState.AddModelError("NameData", validation.ErrorMessage);
             return View();
         }
 
@@ -64,5 +66,4 @@ public class SantaController : Controller
         //todo decouple this view from post request
         return View("CreateChildrenSuccess", model);
     }
-    
 }

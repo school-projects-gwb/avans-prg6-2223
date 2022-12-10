@@ -25,7 +25,8 @@ builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IGiftRepository, GiftRepository>();
 builder.Services.AddTransient<ChildWishListBuilder>();
-builder.Services.AddTransient<WishListValidation>();
+builder.Services.AddTransient<WishListValidator>();
+builder.Services.AddTransient<DuplicateUserValidator>();
 
 var app = builder.Build();
 

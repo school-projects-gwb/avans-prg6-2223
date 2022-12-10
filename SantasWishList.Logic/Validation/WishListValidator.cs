@@ -13,11 +13,11 @@ using System.Xml;
 
 namespace SantasWishList.Logic.Validation
 {
-    public class WishListValidation {
+    public class WishListValidator {
 
         private IGiftRepository repo;
 
-        public WishListValidation(IGiftRepository repo)
+        public WishListValidator(IGiftRepository repo)
         {
             this.repo = repo;
         }
