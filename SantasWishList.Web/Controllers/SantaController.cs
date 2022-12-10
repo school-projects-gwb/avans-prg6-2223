@@ -29,6 +29,7 @@ public class SantaController : Controller
     {
         //Validate and check for duplicate users
         if (!ModelState.IsValid) return View();
+        
         var names = ChildNameDataHelper.GetNamesFromData(model.NameData);
 
         var validation = await _duplicateUserValidator.ValidateDuplicateUsers(names);
@@ -61,9 +62,24 @@ public class SantaController : Controller
             }
         }
 
-        //Make sure name data is nicely formatted and they have consistent spacing after each comma.
-        model.NameData = ChildNameDataHelper.GetPrettyNameDataString(model.NameData);
-        //todo decouple this view from post request
-        return View("CreateChildrenSuccess", model);
+        TempData["NameData"] = ChildNameDataHelper.GetPrettyNameDataString(model.NameData);
+        TempData["IsNice"] = model.IsNice;
+        TempData["Password"] = model.Password;
+
+        return RedirectToAction("CreateChildrenSuccess");
+    }
+    
+    [HttpGet]
+    public IActionResult CreateChildrenSuccess()
+    {
+        if (!TempData.ContainsKey("NameData") || !TempData.ContainsKey("IsNice") || !TempData.ContainsKey("Password"))
+            return RedirectToAction("CreateChildren");
+        
+        CreateChildrenViewModel viewModel = new CreateChildrenViewModel();
+        viewModel.NameData = TempData["NameData"].ToString();
+        viewModel.IsNice = bool.Parse(TempData["IsNice"].ToString());
+        viewModel.Password = TempData["Password"].ToString();
+        
+        return View(viewModel);
     }
 }
