@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
 using SantasWishList.Logic;
@@ -120,6 +121,16 @@ public class WishListController : Controller
     {
         Child child = _childWishListBuilder.Deserialize(model.SerializedChild).Build();
 
+        //Validate child about once more
+        var childAbout = new ChildAboutViewModel 
+            { Age = child.Age, Behaviour = child.Behaviour, Reasoning = child.Reasoning};
+
+        var aboutValidationContext = new ValidationContext(childAbout, serviceProvider: null, items: null);
+        var aboutValidationResult = new List<ValidationResult>();
+
+        if (!Validator.TryValidateObject(childAbout, aboutValidationContext, aboutValidationResult, true))
+            return RedirectToAction("WishListError", "Home");
+        
         //Validate child and send wishlist, return to error page when this goes wrong.
         bool isValid = !_wishListValidator.ValidateWishList(child).Where(vr => vr != ValidationResult.Success).Any(),
              isSent = _giftRepository.SendWishList(child.Wishlist);
