@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SantasWishList.Data.Models;
 using SantasWishList.Web.Models;
 
 namespace SantasWishList.Web.Controllers;
@@ -15,10 +14,7 @@ public class AccountController : Controller
     {
         returnUrl = returnUrl ?? Url.Content("~/");
 
-        return View(new AccountViewModel
-        {
-            ReturnUrl = returnUrl
-        });
+        return View(new AccountViewModel { ReturnUrl = returnUrl });
     }
     
     [HttpPost]
@@ -27,15 +23,14 @@ public class AccountController : Controller
     {
         model.ReturnUrl ??= Url.Content("~/");
 
-        if (ModelState.IsValid)
-        {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password.ToLower(), true, false);
-
-            if (result.Succeeded) return LocalRedirect(model.ReturnUrl);
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        }
+        if (!ModelState.IsValid) return View(model);
         
+        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password.ToLower(), true, false);
+
+        if (result.Succeeded) return LocalRedirect(model.ReturnUrl);
+
+        ModelState.AddModelError(string.Empty, "Mislukte inlogpoging.");
+
         return View(model);
     }
     

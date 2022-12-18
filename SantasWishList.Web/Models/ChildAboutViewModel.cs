@@ -1,10 +1,8 @@
-using Microsoft.Build.Framework;
-using SantasWishList.Data.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+using SantasWishList.Web.Logic;
+
 namespace SantasWishList.Web.Models;
 using Microsoft.Build.Framework;
-using System.Configuration;
 
 public class ChildAboutViewModel
 {

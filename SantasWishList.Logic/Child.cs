@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SantasWishlist.Domain;
 
-namespace SantasWishList.Data.Models
+namespace SantasWishList.Web.Logic
 {
     public class Child
     {
         public string Name { get; set; }
-        public bool IsNice { get; set; }
+        public bool IsNaughty { get; set; }
         public int Age { get; set; }
         public Behaviour Behaviour { get; set; }
         public string? Reasoning { get; set; }

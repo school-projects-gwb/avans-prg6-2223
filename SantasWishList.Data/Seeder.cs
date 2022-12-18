@@ -1,17 +1,16 @@
 using Microsoft.AspNetCore.Identity;
-using SantasWishList.Data.Models;
 
 namespace SantasWishList.Data;
 
 public class Seeder
 {
-	private readonly string userId = "1";
+	private const string UserId = "1";
 
 	public IEnumerable<IdentityUser> UserSeeder() => new List<IdentityUser>()
 	{
 		new IdentityUser
 		{
-			Id = userId,
+			Id = UserId,
 			UserName = "santa",
 			NormalizedUserName = "SANTA",
 			PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "wachtwoord"),
@@ -39,7 +38,7 @@ public class Seeder
     {
 	    new IdentityUserRole<string>
 	    {
-		    UserId = userId,
+		    UserId = UserId,
 		    RoleId = "1"
 	    }
     };

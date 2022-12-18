@@ -1,13 +1,7 @@
-﻿using NuGet.Protocol.Plugins;
-using SantasWishlist.Domain;
-using SantasWishList.Data.Models;
+﻿using SantasWishlist.Domain;
 using SantasWishList.Logic.Validation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SantasWishList.Web.Logic;
 
 namespace SantasWishList.Test.WishListValidationTests
 {

@@ -26,9 +26,6 @@
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="SantasWishlist.Domain">
       <HintPath>..\SantasWishlist.Domain.dll</HintPath>
     </Reference>

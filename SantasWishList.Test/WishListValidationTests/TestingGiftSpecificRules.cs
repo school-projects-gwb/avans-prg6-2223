@@ -1,14 +1,7 @@
 ﻿using SantasWishlist.Domain;
-using SantasWishList.Data.Models;
 using SantasWishList.Logic.Validation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
+using SantasWishList.Web.Logic;
 
 namespace SantasWishList.Test.WishListValidationTests
 {

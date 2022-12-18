@@ -1,4 +1,4 @@
-using SantasWishList.Data.Models;
+using SantasWishList.Web.Logic;
 
 namespace SantasWishList.Web.Extensions;
 

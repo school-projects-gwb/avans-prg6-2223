@@ -1,15 +1,12 @@
-using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
 using SantasWishList.Logic;
 using SantasWishList.Logic.Helpers;
 using SantasWishList.Logic.Validation;
+using SantasWishList.Web.Logic;
 using SantasWishList.Web.Models;
 
 namespace SantasWishList.Web.Controllers;

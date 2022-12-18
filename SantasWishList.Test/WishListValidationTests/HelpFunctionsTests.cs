@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using SantasWishlist.Domain;
-using SantasWishList.Data.Models;
-using System;
-using System.Collections.Generic;
+﻿using SantasWishlist.Domain;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SantasWishList.Web.Logic;
 
 namespace SantasWishList.Test.WishListValidationTests
 {
@@ -16,7 +10,7 @@ namespace SantasWishList.Test.WishListValidationTests
         {
             Child child = new Child();
             child.Name = name;
-            child.IsNice = santaJudgement;
+            child.IsNaughty = santaJudgement;
             child.Wishlist = new WishList();
             child.Wishlist.Wanted = new List<Gift>();
             child.AdditionalGiftNames = new List<string>();

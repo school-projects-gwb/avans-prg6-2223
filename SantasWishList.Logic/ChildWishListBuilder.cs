@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
-using SantasWishList.Data.Models;
 using SantasWishlist.Domain;
+using SantasWishList.Web.Logic;
 
 namespace SantasWishList.Logic;
 
@@ -18,7 +18,7 @@ public class ChildWishListBuilder
 
     public ChildWishListBuilder SetIsNice(bool isNaughty)
     {
-        _child.IsNice = isNaughty;
+        _child.IsNaughty = isNaughty;
         return this;
     }
 
