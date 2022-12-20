@@ -15,8 +15,8 @@ public class CreateChildrenViewModel
     
     [Required]
     [DataType(DataType.Password)]
-    [MinLength(6, ErrorMessage = "Wachtwoord moet minimaal 3 letters lang zijn.")]
-    [MaxLength(15, ErrorMessage = "Wachtwoord mag maximaal 10 letters lang zijn.")]
+    [MinLength(4, ErrorMessage = "Wachtwoord moet minimaal 4 letters lang zijn.")]
+    [MaxLength(15, ErrorMessage = "Wachtwoord mag maximaal 15 letters lang zijn.")]
     [RegularExpression(@"^[a-z]+$", ErrorMessage = "Gebruik a-z, kleine letters.")]
     public string Password { get; set; }
 }

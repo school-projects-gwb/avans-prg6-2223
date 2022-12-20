@@ -50,16 +50,15 @@ public class SantaController : Controller
             
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded) continue;
+            
+            await _userManager.AddClaimsAsync(user, new[]
             {
-                await _userManager.AddClaimsAsync(user, new[]
-                {
-                    new Claim("IsNice", model.IsNice.ToString()),
-                    new Claim("WishlistSubmitted", false.ToString())
-                });
+                new Claim("IsNice", model.IsNice.ToString()),
+                new Claim("WishlistSubmitted", false.ToString())
+            });
                 
-                await _userManager.AddToRoleAsync(user, "Child");
-            }
+            await _userManager.AddToRoleAsync(user, "Child");
         }
 
         TempData["NameData"] = ChildNameDataHelper.GetPrettyNameDataString(model.NameData);
@@ -76,7 +75,7 @@ public class SantaController : Controller
             return RedirectToAction("CreateChildren");
         
         CreateChildrenViewModel viewModel = new CreateChildrenViewModel();
-        viewModel.NameData = TempData["NameData"].ToString();
+        viewModel.NameData = TempData["NameData"].ToString().ToLower();
         viewModel.IsNice = bool.Parse(TempData["IsNice"].ToString());
         viewModel.Password = TempData["Password"].ToString();
         

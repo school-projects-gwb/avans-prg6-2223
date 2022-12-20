@@ -11,7 +11,7 @@ public class ChildNameData : ValidationAttribute
         if (ChildNameDataHelper.DataHasDuplicates(value.ToString()))
             return new ValidationResult(context.DisplayName + " mag enkel unieke namen bevatten.");
         
-        if (new Regex(@"^([a-z]+,\s*)*[a-z]+$").IsMatch(value.ToString())) return ValidationResult.Success;
+        if (new Regex(@"^([a-zA-Z]+,\s*)*[a-zA-Z]+$").IsMatch(value.ToString())) return ValidationResult.Success;
 
         return new ValidationResult(context.DisplayName + " is niet valide.");
     }

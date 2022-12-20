@@ -18,7 +18,7 @@
                 <div id="navigationMenu" class="nav-mobile hidden md:inline-block">
                     @if(User.IsInRole("Santa"))
                     {
-                        <a class="nav-link mr-4 @GetActiveMenuLinkCheck(controller, "WishList")" asp-controller="Santa" asp-action="CreateChildren">
+                        <a class="nav-link mr-4 @GetActiveMenuLinkCheck(controller, "Santa")" asp-controller="Santa" asp-action="CreateChildren">
                             Kinderen uitnodigen
                         </a>
                     }
