@@ -24,14 +24,35 @@
     <Content Remove="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\js\" />
+    <Folder Include="Views\Wishlist\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="SantasWishlist.Domain" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SantasWishList.Data\SantasWishList.Data.csproj" />
+    <ProjectReference Include="..\SantasWishList.Logic\SantasWishList.Logic.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
+  </PropertyGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Login.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Logout.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ValidationScriptsPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SantasWishlist.Domain">
-      <HintPath>..\..\..\Downloads\SantasWishlist.Domain.dll</HintPath>
+      <HintPath>..\SantasWishlist.Domain.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

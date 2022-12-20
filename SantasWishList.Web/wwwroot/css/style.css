@@ -10,8 +10,12 @@
     @apply bg-gray-300 text-gray-400 border-gray-300;
 }
 
-.btn-primary:hover:enabled {
+.btn-primary:hover {
     @apply bg-white text-black;
+}
+
+.categoryConfirm:not(:first-child) {
+    @apply mt-8;
 }
 
 .btn-secondary {
@@ -24,4 +28,64 @@
 
 .input-text {
     @apply border border-gray-300 rounded-lg rounded-t-none px-4 py-2;
+}
+
+.nav-link {
+    @apply text-black text-lg;
+}
+
+.nav-link:hover {
+    @apply underline;
+}
+
+.nav-link-active {
+    @apply font-bold underline;
+}
+
+.toggler {
+    position: absolute;
+    width: 50px;
+    height: 25px;
+    border-radius: .75rem;
+    margin-top: 2rem;
+}
+
+.toggler:hover {
+    cursor: pointer;
+}
+
+.toggler .togglerInput {
+    visibility: hidden;
+}
+
+.toggler .ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    display: block;
+    background: white;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: .2s;
+}
+
+.toggler .togglerInput:checked ~ .ball {
+    transform: translateX(25px);
+}
+
+.ball {
+    background: #f0ebf4;
+}
+
+@layer utilities {
+    @media (max-width: 768px) {
+        .nav-mobile {
+            @apply flex-col absolute w-screen h-screen justify-center items-center top-0 left-0 z-30 bg-white;
+        }
+
+        .nav-link {
+            @apply my-1 text-2xl;
+        }
+    }
 }

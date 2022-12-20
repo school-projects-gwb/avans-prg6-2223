@@ -1,0 +1,52 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CreateChildrenViewModel
+
+@{
+    ViewData["Title"] = "Nodig kinderen uit";
+}
+
+<form method="post" asp-action="CreateChildren" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
+    <h1 class="text-5xl font-semibold tracking-tight">Hoi Kerstman!</h1>
+    <h3 class="text-2xl leading-10 mt-2">Nodig nieuwe kinderen uit om hun verlanglijstje in te vullen door voor hen accounts aan te maken.</h3>
+
+    <div class="mt-4 flex flex-col mt-8">
+        <label asp-for="NameData" class="mb-1">Namen kinderen*</label>
+        <textarea asp-for="NameData" class="input-text w-full" aria-required="true"></textarea>
+        <span asp-validation-for="NameData" class="text-message-error"></span>
+        <span class="text-gray-600 text-sm ml-0.5 mt-0.5">* Maak onderscheid tussen de namen d.m.v. comma's.<br/> Voorbeeld: <span class="p-0.5 rounded-lg italic bg-gray-100">Piet, Henk, Klaas</span></span>
+    </div>
+    
+    <div class="flex flex-col mt-8">
+        <label asp-for="IsNice">Zijn de kinderen lief geweest?</label>
+        <label class="toggler bg-message-error" id="toggler">
+            <input id="togglerInput" class="togglerInput" asp-for="IsNice" aria-required="true" />
+        <span class="ball"></span>
+        </label>
+    </div>
+    
+    <div class="flex flex-col mt-16">
+        <label asp-for="Password" class="mb-1">Wachtwoord*</label>
+        <input asp-for="Password" class="input-text w-full" aria-required="true" autocomplete="off"/>
+        <span asp-validation-for="Password" class="text-message-error"></span>
+        <span class="text-gray-600 text-sm ml-0.5 mt-0.5">* Kies een wachtwoord dat eenvoudig te onthouden en in te typen is.</span>
+    </div>
+
+    @Html.Partial("SubmitButtonComponent", "Creeër accounts")
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script>
+    const togglerInput = document.getElementById('togglerInput');
+    const toggler = document.getElementById('toggler');
+    
+    togglerInput.addEventListener('change', toggleInputColor);
+    
+    function toggleInputColor() {
+         toggler.classList.toggle('bg-message-error');
+        toggler.classList.toggle('bg-message-success');
+    }
+</script>
+

@@ -1,7 +1,32 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Identity;
+using SantasWishList.Data;
+using SantasWishlist.Domain;
+using SantasWishList.Logic;
+using SantasWishList.Logic.Validation;
+
+var builder = WebApplication.CreateBuilder(args);
+
+//Context and Identity, remove password complexity requirements
+builder.Services
+    .AddDbContext<DatabaseContext>()
+    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+    })
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddDefaultTokenProviders();
 
 // Add services to the container.
+builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IGiftRepository, GiftRepository>();
+builder.Services.AddTransient<ChildWishListBuilder>();
+builder.Services.AddTransient<WishListValidator>();
+builder.Services.AddTransient<DuplicateUserValidator>();
 
 var app = builder.Build();
 
@@ -18,11 +43,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();;
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
 

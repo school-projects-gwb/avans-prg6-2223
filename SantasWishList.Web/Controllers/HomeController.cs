@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SantasWishList.Web.Models;
 
@@ -6,27 +7,24 @@ namespace SantasWishList.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
+    [Authorize]
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
+        //Redirect to correct 'default' action based on role
+        if (User.IsInRole("Santa")) return RedirectToAction("CreateChildren", "Santa");
+        if (User.IsInRole("Child")) return RedirectToAction("ChildAbout", "WishList");
+        //Fallback
         return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+    public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+    [HttpGet]
+    public IActionResult WishListSuccess() => View();
+
+    [HttpGet]
+    [Route("WishListError")]
+    public IActionResult WishListError() => View();
 }
 

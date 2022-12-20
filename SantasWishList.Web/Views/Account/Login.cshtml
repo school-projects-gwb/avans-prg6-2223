@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AccountViewModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="w-full flex justify-center mt-16">
+    <form method="post" class="w-full md:w-1/2 lg:w-1/4 mx-8">
+        <h1 class="text-3xl">Inloggen</h1>
+        <div asp-validation-summary="ModelOnly" class="text-message-error"></div>
+        <div class="mt-4 flex flex-col">
+            <label asp-for="UserName" class="form-label">Gebruikersnaam</label>
+            <input asp-for="UserName" class="input-text w-full" autocomplete="username" aria-required="true"/>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="mt-4 flex flex-col">
+            <label asp-for="Password" class="form-label">Wachtwoord</label>
+            <input asp-for="Password" class="input-text w-full" autocomplete="current-password" aria-required="true"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button id="login-submit" type="submit" class="btn-primary w-full mt-8">Log in</button>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
