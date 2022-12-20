@@ -9,7 +9,7 @@
 <form method="post" asp-action="ChildWishListSubmit" class="w-full md:w-1/2 xl:w-5/12 max-w-screen-xl mx-8 mb-16">
     <input type="hidden" asp-for="SerializedChild">
     
-    <div asp-validation-summary="All">
+    <div asp-validation-summary="All" class="text-message-error">
     </div>
     
     <h1 class="text-5xl font-semibold tracking-tight">Dankjewel @(ViewBag.Name)!</h1>
