@@ -23,7 +23,7 @@ namespace SantasWishList.Logic.Validation
             results.Add(ValidateNightLamp(child.Wishlist));
             results.Add(ValidateMusic(child.Wishlist));
             results.Add(ValidateUniqueGift(child.AdditionalGiftNames));
-            results.Add(ValidateCostumRule(child.Wishlist));
+            results.Add(ValidateCostumRule(child.AdditionalGiftNames));
 
             return results;
         }
@@ -43,7 +43,6 @@ namespace SantasWishList.Logic.Validation
             if (child.IsNaughty)
             {
                 if (CheckForCharityWork(child.Reasoning)) { return ValidationResult.Success; }
-                WishList wishlist = child.Wishlist;
                 if (CheckStijnDolfje(child))
                 {
                     Gift dolfje = null;
@@ -53,31 +52,36 @@ namespace SantasWishList.Logic.Validation
                         dolfje = gift; break;
                     }
 
-                    if (dolfje != null) wishlist.Wanted.Remove(dolfje);
+                    if (dolfje != null) child.Wishlist.Wanted.Remove(dolfje);
                 }
-                else if (!CheckAmountOfGiftsPerCatagory(wishlist, 3))
+                else if (!CheckAmountOfGiftsPerCatagory(child, 3))
                 {
                     return new ValidationResult("Je mag per catogory maar 3 cadeautjes uitzoeken.");
                 }
             }
             else //naughty
             {
-                if(child.Behaviour == Behaviour.BRAAF)
-                    if(child.Wishlist.Wanted.Count() > 1) 
+                if (child.Behaviour == Behaviour.BRAAF)
+                    if (child.AdditionalGiftNames != null && child.AdditionalGiftNames.Any())
+                    {
+                        if ((child.Wishlist.Wanted.Count() + child.AdditionalGiftNames.Count()) > 1)
+                            return new ValidationResult("Jij bent stout geweest en liegt er om! Jij mag maar 1 cadeautje kiezen.");
+                    }
+                    else if (child.Wishlist.Wanted.Count() > 1) 
                         return new ValidationResult("Jij bent stout geweest en liegt er om! Jij mag maar 1 cadeautje kiezen.");
 
-                if (!CheckAmountOfGiftsPerCatagory(child.Wishlist, 1)) 
+                if (!CheckAmountOfGiftsPerCatagory(child, 1)) 
                     return new ValidationResult("Jij bent stout maar eerlijk. Maar je mag maar 1 cadeautje per catagory kiezen.");
             }
             
             return ValidationResult.Success;
         }
 
-        private bool CheckAmountOfGiftsPerCatagory(WishList wishlist, int amount)
+        private bool CheckAmountOfGiftsPerCatagory(Child child, int amount)
         {
             Dictionary<GiftCategory, int> giftcount = new Dictionary<GiftCategory, int>();
 
-            foreach(Gift gift in wishlist.Wanted)
+            foreach(Gift gift in child.Wishlist.Wanted)
             {
                 try
                 {
@@ -89,6 +93,18 @@ namespace SantasWishList.Logic.Validation
                 }
             }
 
+            if (child.AdditionalGiftNames != null && child.AdditionalGiftNames.Any())
+            {
+                try
+                {
+                    giftcount[GiftCategory.WANT] += child.AdditionalGiftNames.Count();
+                }
+                catch(KeyNotFoundException ex)
+                {
+                    giftcount.Add(GiftCategory.WANT, child.AdditionalGiftNames.Count());
+                }
+            }
+
             foreach (KeyValuePair<GiftCategory, int> entry in giftcount)
                 if(entry.Value > amount) return false;
 
@@ -97,7 +113,7 @@ namespace SantasWishList.Logic.Validation
 
         private bool CheckForCharityWork(string? description)
         {
-            if (description == null) return true;
+            if (description == null) return false;
             /*
              * instructions:
              * Check if a kid used "vrijwilligerswerk" in their description.
@@ -222,15 +238,17 @@ namespace SantasWishList.Logic.Validation
             return ValidationResult.Success;
         }
 
-        private ValidationResult ValidateCostumRule(WishList wishlist)
+        private ValidationResult ValidateCostumRule(List<string>? customWishes)
         {
             /*
              * instructions:
              * if a kid asks for a "choladeletter" or "pepernoten" return an error saying
              * "Ik ben toch zeker sinterklaas niet."
              */
-            foreach(Gift gift in wishlist.Wanted)
-                if(gift.Name.ToLower().Equals("pepernoten") || gift.Name.ToLower().Equals("chocoladeletter"))
+            if (customWishes == null || !customWishes.Any()) return ValidationResult.Success;
+
+            foreach (string gift in customWishes)
+                if(gift.ToLower().Equals("pepernoten") || gift.ToLower().Equals("chocoladeletter"))
                     return new ValidationResult("Ik ben toch zeker Sinterklaas niet.");
             
             return ValidationResult.Success;
