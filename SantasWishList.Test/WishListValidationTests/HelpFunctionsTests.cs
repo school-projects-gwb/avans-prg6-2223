@@ -118,10 +118,6 @@ namespace SantasWishList.Test.WishListValidationTests
 
         public static Child addCostumGift(Child child, string name, GiftCategory category)
         {
-            Gift gift = new Gift();
-            gift.Name = name;
-            gift.Category = category;
-            child.Wishlist.Wanted.Add(gift);
             child.AdditionalGiftNames.Add(name);
             
             return child;
